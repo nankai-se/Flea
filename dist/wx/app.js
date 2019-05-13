@@ -4,7 +4,8 @@ global.webpackJsonpMpvue([4],[
 /* 0 */,
 /* 1 */,
 /* 2 */,
-/* 3 */
+/* 3 */,
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -26,7 +27,6 @@ wx.cloud.init({
 });
 
 /***/ }),
-/* 4 */,
 /* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -65,9 +65,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-64f21c37", Component.options)
+    hotAPI.createRecord("data-v-32b66057", Component.options)
   } else {
-    hotAPI.reload("data-v-64f21c37", Component.options)
+    hotAPI.reload("data-v-32b66057", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -120,4 +120,4 @@ if (false) {(function () {
 });
 
 /***/ })
-],[3]);
+],[4]);

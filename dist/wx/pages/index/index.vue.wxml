@@ -1,18 +1,46 @@
-<import src="/components/card.vue.wxml" /><template name="03948e64">
-  <view bindtap="handleProxy" data-eventid="{{'3'}}" data-comkey="{{$k}}" class="_div data-v-5ec418c0">
-    <view class="_div data-v-5ec418c0 userinfo" bindtap="handleProxy" data-eventid="{{'0'}}" data-comkey="{{$k}}">
-      <image class="_img data-v-5ec418c0 userinfo-avatar" wx:if="{{userInfo.avatarUrl}}" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-      <image class="_img data-v-5ec418c0 userinfo-avatar" src="/static/images/user.png" background-size="cover"></image>
-      <view class="_div data-v-5ec418c0 userinfo-nickname"><template data="{{...$root[$kk+'0'], $root}}" is="0dcfed4a"></template></view>
+<import src="/components/card.vue.wxml" /><template name="556e0fb2">
+  <view bindtap="handleProxy" data-eventid="{{'1'}}" data-comkey="{{$k}}" class="_div data-v-492ea4e0">
+    <van-search value="{{search_value}}" placeholder="请输入搜索关键词" class="_van-search data-v-492ea4e0"></van-search>
+    <view class="_view data-v-492ea4e0 swiper-view">
+      <swiper class="_swiper data-v-492ea4e0 swiper" indicator-dots="true" circular autoplay="true" interval="5000" duration="1000">
+        <block wx:key="img.id" key="{{img.id}}" wx:for="{{advertises}}" wx:for-index="index" wx:for-item="img">
+          <swiper-item class="_swiper-item data-v-492ea4e0">
+            <view class="_view data-v-492ea4e0 swiper-box">
+              <image src="{{img}}" class="_img data-v-492ea4e0 slide-image" mode="aspectFill"></image>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
     </view>
-    <view class="_div data-v-5ec418c0 usermotto">
-      <view class="_div data-v-5ec418c0 user-motto"><template data="{{...$root[$kk+'1'], $root}}" is="0dcfed4a"></template></view>
+    <view class="_div data-v-492ea4e0 panel">
+      <view class="_div data-v-492ea4e0 theme-panel">
+        <view class="_view data-v-492ea4e0 theme-row">
+          <view class="_view data-v-492ea4e0 theme-box" wx:key="img.id" key="{{img.id}}" wx:for="{{theme_img_one}}" wx:for-index="index" wx:for-item="img">
+            <image class="_img data-v-492ea4e0 theme-img" src="{{img}}"></image> <label class="_label data-v-492ea4e0 theme-title">{{theme_title_one[index]}}</label>
+          </view>
+        </view>
+        <view class="_view data-v-492ea4e0 theme-row">
+          <view class="_view data-v-492ea4e0 theme-box" wx:key="img.id" key="{{img.id}}" wx:for="{{theme_img_two}}" wx:for-index="index" wx:for-item="img">
+            <image class="_img data-v-492ea4e0 theme-img" src="{{img}}"></image> <label class="_label data-v-492ea4e0 theme-title">{{theme_title_two[index]}}</label>
+          </view>
+        </view>
+      </view>
+      <image id="gift_package" src="{{gift_package}}" mode="aspectFill" class="_img data-v-492ea4e0"></image>
     </view>
-    <form class="_form data-v-5ec418c0 form-container"><input type="text" class="_input data-v-5ec418c0 form-control" value="{{motto}}" placeholder="v-model" /> <input type="text" class="_input data-v-5ec418c0 form-control" value="{{motto}}" bindinput="handleProxy" placeholder="v-model" data-eventid="{{'1'}}" data-comkey="{{$k}}" /> <input type="text" class="_input data-v-5ec418c0 form-control" value="{{motto}}" bindblur="handleProxy" placeholder="v-model.lazy" data-eventid="{{'2'}}" data-comkey="{{$k}}" /></form>
-    <navigator url="/pages/counter/main" class="_a data-v-5ec418c0 counter">去往Vuex示例页面</navigator>
-    <view class="_div data-v-5ec418c0 all">
-      <view class="_div data-v-5ec418c0 left"></view>
-      <view class="_div data-v-5ec418c0 right"></view>
+    <view class="_div data-v-492ea4e0 panel">
+      <view class="_div data-v-492ea4e0 item-panel">
+        <view class="_div data-v-492ea4e0 item-img-box">
+          <image class="_img data-v-492ea4e0 item-img" src="/static/images/jeans.jpg" mode="aspectFill"></image>
+        </view>
+        <view class="_div data-v-492ea4e0 item-img-box">
+          <image class="_img data-v-492ea4e0 item-img" src="/static/images/jeans.jpg" mode="aspectFill"></image>
+        </view>
+      </view>
+    </view>
+    <view class="_div data-v-492ea4e0 userinfo" bindtap="handleProxy" data-eventid="{{'0'}}" data-comkey="{{$k}}">
+      <image class="_img data-v-492ea4e0 userinfo-avatar" wx:if="{{userInfo.avatarUrl}}" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+      <image class="_img data-v-492ea4e0 000000000\n    +userinfo-avatar" src="/static/images/user.png" background-size="cover"></image>
+      <view class="_div data-v-492ea4e0 userinfo-nickname"><template data="{{...$root[$kk+'2'], $root}}" is="c9d52bd0"></template></view>
     </view>
   </view>
 </template>
