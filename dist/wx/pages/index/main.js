@@ -156,12 +156,12 @@ if (false) {(function () {
         avatarUrl: 'http://mpvue.com/assets/logo.png'
       },
       search_value: '想搜啥呀',
-      advertises: ['/static/images/adve1.jpg', '/static/images/adve2.jpg', '/static/images/adve3.jpg'],
-      theme_img_one: ['/static/images/books.png', '/static/images/clothes.png', '/static/images/electric.png', '/static/images/food.png'],
+      advertises: ['cloud://idwc.6964-idwc/static/images/adve1.jpg', 'cloud://idwc.6964-idwc/static/images/adve2.jpg', 'cloud://idwc.6964-idwc/static/images/adve3.jpg'],
+      theme_img_one: ['cloud://idwc.6964-idwc/static/images/books.png', 'cloud://idwc.6964-idwc/static/images/clothes.png', 'cloud://idwc.6964-idwc/static/images/electric.png', 'cloud://idwc.6964-idwc/static/images/food.png'],
       theme_title_one: ['教辅', '服饰', '电器', '食物'],
-      theme_img_two: ['/static/images/makeup.png', '/static/images/transformation.png', '/static/images/wallet.png', '/static/images/see_more.png'],
+      theme_img_two: ['cloud://idwc.6964-idwc/static/images/makeup.png', 'cloud://idwc.6964-idwc/static/images/transformation.png', 'cloud://idwc.6964-idwc/static/images/wallet.png', 'cloud://idwc.6964-idwc/static/images/see_more.png'],
       theme_title_two: ['彩妆', '交通', '数码', '更多'],
-      gift_package: '/static/images/gift_package.png'
+      gift_package: 'cloud://idwc.6964-idwc/static/images/gift_package.png'
     };
   },
 
@@ -292,7 +292,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
   }) : _vm._e(), _vm._v(" "), _c('img', {
     staticClass: "000000000\n    +userinfo-avatar",
     attrs: {
-      "src": "/static/images/user.png",
+      "src": "cloud://idwc.6964-idwc/static/images/user.png",
       "background-size": "cover"
     }
   }), _vm._v(" "), _c('div', {
@@ -314,7 +314,7 @@ var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _
   }, [_c('img', {
     staticClass: "item-img",
     attrs: {
-      "src": "/static/images/jeans.jpg",
+      "src": "cloud://idwc.6964-idwc/static/images/jeans.jpg",
       "mode": "aspectFill"
     }
   })]), _vm._v(" "), _c('div', {
@@ -322,7 +322,7 @@ var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _
   }, [_c('img', {
     staticClass: "item-img",
     attrs: {
-      "src": "/static/images/jeans.jpg",
+      "src": "cloud://idwc.6964-idwc/static/images/jeans.jpg",
       "mode": "aspectFill"
     }
   })])])])

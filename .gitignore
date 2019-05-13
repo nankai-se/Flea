@@ -4,15 +4,11 @@ node_modules
 package-lock.json
 explorations
 TODOs.md
-dist
-dist/*.gz
-dist/*.map
-dist/vue.common.min.js
+dist/
 test/e2e/reports
 test/e2e/screenshots
 coverage
 RELEASE_NOTE*.md
-dist/*.js
 packages/vue-server-renderer/basic.js
 packages/vue-server-renderer/build.js
 packages/vue-server-renderer/server-plugin.js

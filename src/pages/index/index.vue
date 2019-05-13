@@ -32,17 +32,17 @@
     <div class="panel">
       <div class="item-panel">
         <div class="item-img-box">
-          <img class="item-img" src="/static/images/jeans.jpg" mode="aspectFill"/>
+          <img class="item-img" src="cloud://idwc.6964-idwc/static/images/jeans.jpg" mode="aspectFill"/>
         </div>
         <div class="item-img-box">
-          <img class="item-img" src="/static/images/jeans.jpg" mode="aspectFill"/>
+          <img class="item-img" src="cloud://idwc.6964-idwc/static/images/jeans.jpg" mode="aspectFill"/>
         </div>
       </div>
     </div>
     <div class="userinfo" @click="bindViewTap">
       <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
       <img class="000000000
-      +userinfo-avatar" src="/static/images/user.png" background-size="cover" />
+      +userinfo-avatar" src="cloud://idwc.6964-idwc/static/images/user.png" background-size="cover" />
 
       <div class="userinfo-nickname">
         <card :text="userInfo.nickName"></card>
@@ -64,15 +64,15 @@ export default {
       },
       search_value: '想搜啥呀',
       advertises: [
-        '/static/images/adve1.jpg',
-        '/static/images/adve2.jpg',
-        '/static/images/adve3.jpg'
+        'cloud://idwc.6964-idwc/static/images/adve1.jpg',
+        'cloud://idwc.6964-idwc/static/images/adve2.jpg',
+        'cloud://idwc.6964-idwc/static/images/adve3.jpg'
       ],
       theme_img_one: [
-        '/static/images/books.png',
-        '/static/images/clothes.png',
-        '/static/images/electric.png',
-        '/static/images/food.png'
+        'cloud://idwc.6964-idwc/static/images/books.png',
+        'cloud://idwc.6964-idwc/static/images/clothes.png',
+        'cloud://idwc.6964-idwc/static/images/electric.png',
+        'cloud://idwc.6964-idwc/static/images/food.png'
       ],
       theme_title_one: [
         '教辅',
@@ -81,10 +81,10 @@ export default {
         '食物'
       ],
       theme_img_two: [
-        '/static/images/makeup.png',
-        '/static/images/transformation.png',
-        '/static/images/wallet.png',
-        '/static/images/see_more.png'
+        'cloud://idwc.6964-idwc/static/images/makeup.png',
+        'cloud://idwc.6964-idwc/static/images/transformation.png',
+        'cloud://idwc.6964-idwc/static/images/wallet.png',
+        'cloud://idwc.6964-idwc/static/images/see_more.png'
       ],
       theme_title_two: [
         '彩妆',
@@ -92,7 +92,7 @@ export default {
         '数码',
         '更多'
       ],
-      gift_package: '/static/images/gift_package.png'
+      gift_package: 'cloud://idwc.6964-idwc/static/images/gift_package.png'
     }
   },
 
