@@ -4,6 +4,7 @@ node_modules
 package-lock.json
 explorations
 TODOs.md
+dist
 dist/*.gz
 dist/*.map
 dist/vue.common.min.js
