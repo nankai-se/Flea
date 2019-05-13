@@ -1,0 +1,10 @@
+<template name="0f186a2b">
+  <view class="_div data-v-0fdf1852 itemcard">
+    <view class="_view data-v-0fdf1852 item-img-box">
+      <image class="_img data-v-0fdf1852 item-img" src="{{img}}" mode="aspectFill"></image>
+    </view>
+    <view class="_div data-v-0fdf1852 item-tag"><label class="_span data-v-0fdf1852 price-tag">￥</label>
+      <view class="_strong data-v-0fdf1852 price-tag">{{price}}</view>
+    </view>
+  </view>
+</template>

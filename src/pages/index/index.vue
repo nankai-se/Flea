@@ -29,30 +29,19 @@
       </div>
       <img id="gift_package" :src="gift_package" mode="aspectFill"/>
     </div>
-    <div class="panel">
-      <div class="item-panel">
-        <div class="item-img-box">
-          <img class="item-img" src="/static/images/jeans.jpg" mode="aspectFill"/>
-        </div>
-        <div class="item-img-box">
-          <img class="item-img" src="/static/images/jeans.jpg" mode="aspectFill"/>
-        </div>
-      </div>
-    </div>
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <img class="000000000
-      +userinfo-avatar" src="/static/images/user.png" background-size="cover" />
-
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-      </div>
-    </div>
+    <view class="panel">
+      <div class="beforeItem" v-text="before_item_text"></div>
+      <div class="noGoods-panel" v-if="!hasGoods" v-text="noGoods"></div>
+      <view class="item-panel" v-if="hasGoods">
+        <itemcard v-for="goods in goodsLists" :key="goods.id" :img="goods['img']" :price="goods['price']"></itemcard>
+      </view>
+      <div class="noMoreGoods-panel" v-if="isNoMore" v-text="noMoreGoods"></div>
+    </view>
   </div>
 </template>
 
 <script>
-import card from '@/components/card'
+import itemcard from '../../components/itemcard.vue'
 
 export default {
   data () {
@@ -64,15 +53,15 @@ export default {
       },
       search_value: '想搜啥呀',
       advertises: [
-        '/static/images/adve1.jpg',
-        '/static/images/adve2.jpg',
-        '/static/images/adve3.jpg'
+        'cloud://idwc.6964-idwc/static/images/adve1.jpg',
+        'cloud://idwc.6964-idwc/static/images/adve2.jpg',
+        'cloud://idwc.6964-idwc/static/images/adve3.jpg'
       ],
       theme_img_one: [
-        '/static/images/books.png',
-        '/static/images/clothes.png',
-        '/static/images/electric.png',
-        '/static/images/food.png'
+        'cloud://idwc.6964-idwc/static/images/books.png',
+        'cloud://idwc.6964-idwc/static/images/clothes.png',
+        'cloud://idwc.6964-idwc/static/images/electric.png',
+        'cloud://idwc.6964-idwc/static/images/food.png'
       ],
       theme_title_one: [
         '教辅',
@@ -81,10 +70,10 @@ export default {
         '食物'
       ],
       theme_img_two: [
-        '/static/images/makeup.png',
-        '/static/images/transformation.png',
-        '/static/images/wallet.png',
-        '/static/images/see_more.png'
+        'cloud://idwc.6964-idwc/static/images/makeup.png',
+        'cloud://idwc.6964-idwc/static/images/transformation.png',
+        'cloud://idwc.6964-idwc/static/images/wallet.png',
+        'cloud://idwc.6964-idwc/static/images/see_more.png'
       ],
       theme_title_two: [
         '彩妆',
@@ -92,15 +81,41 @@ export default {
         '数码',
         '更多'
       ],
-      gift_package: '/static/images/gift_package.png'
+      gift_package: 'cloud://idwc.6964-idwc/static/images/gift_package.png',
+      before_item_text: '--- 好物推荐 ---',
+      noGoods: '暂时没有商品，过会再来吧~',
+      noMoreGoods: '没有更多商品啦~',
+      amount: 0,
+      goodsLists: [],
+      hasGoods: false,
+      isNoMore: false
     }
   },
-
   components: {
-    card
+    itemcard
   },
-
+  onLoad () {
+    wx.cloud.init({
+      env: 'idwc',
+      traceUser: true
+    })
+    this.getGoods(0)
+  },
+  onUnload () {
+    this.clearCache()
+  },
+  onPullDownRefresh () {
+    this.clearCache()
+    this.getGoods(0)
+  },
+  onReachBottom () {
+    this.getGoods(this.amount)
+  },
   methods: {
+    clearCache () {
+      this.amount = 0
+      this.goodsLists = []
+    },
     bindViewTap () {
       const url = '../logs/main'
       if (mpvuePlatform === 'wx') {
@@ -112,6 +127,36 @@ export default {
     clickHandle (ev) {
       console.log('clickHandle:', ev)
       // throw {message: 'custom test'}
+    },
+    getGoods (amount) {
+      const MAX_LIMIT = 12
+      const db = wx.cloud.database()
+      db.collection('test_yunfan').doc('613a1989-b100-4904-85fe-2528cbb3a9b5')
+        .get({
+          success (res) {
+            console.log('success')
+          }
+        })
+      db.collection('goods').orderBy('release_time', 'asc').skip(this.amount).limit(MAX_LIMIT)
+        .get()
+        .then(res => {
+          console.log('res: ', res)
+          if (res.data.length > 0) {
+            for (let i = 0; i < res.data.length; i++) {
+              this.goodsLists.push({
+                'img': res.data[i]['fileID'],
+                'price': res.data[i]['price']
+              })
+            }
+            this.amount += res.data.length
+          } else {
+            this.isNoMore = true
+          }
+          this.hasGoods = this.amount > 0
+        })
+        .catch(err => {
+          console.error(err)
+        })
     }
   },
 
@@ -180,57 +225,31 @@ swiper-item image {
   margin-bottom: 5px;
 }
 
+.beforeItem {
+  margin-top: 10px;
+  font-size: 18px;
+  color:rgb(200, 67, 67);
+}
+
 .item-panel {
-  display: flex;
-  flex-direction: row;
   width: 95%;
 }
 
-
-.item-img-box {
-  position: relative;
-  width: calc(50% - 10px);
-  height: 0px;
-  padding-bottom: calc(50% - 10px);
-  margin-right: 5px;
-  margin-left:5px;
+.noGoods-panel {
+  color: rgb(177, 177, 177);
+  background-color: rgb(249, 250, 250);
+  height: 200px;
+  margin-top: 50px;
 }
 
-.item-img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-top-left-radius: 5%;
-  border-top-right-radius: 5%;
+.noMoreGoods-panel {
+  color: rgb(177, 177, 177);
+  background-color: rgb(249, 250, 250);
+  height: 50px;
+  margin-top: 20px;
+  font-size: 15px;
 }
 
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
 
 #gift_package {
   max-height: 50px;
