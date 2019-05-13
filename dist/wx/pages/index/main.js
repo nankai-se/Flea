@@ -30,7 +30,7 @@ app.$mount();
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_mpvue_loader_lib_selector_type_script_index_0_index_vue__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_mpvue_loader_lib_template_compiler_index_id_data_v_5ec418c0_hasScoped_true_transformToRequire_video_src_source_src_img_src_image_xlink_href_fileExt_template_wxml_script_js_style_wxss_platform_wx_node_modules_mpvue_loader_lib_selector_type_template_index_0_index_vue__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_mpvue_loader_lib_template_compiler_index_id_data_v_492ea4e0_hasScoped_true_transformToRequire_video_src_source_src_img_src_image_xlink_href_fileExt_template_wxml_script_js_style_wxss_platform_wx_node_modules_mpvue_loader_lib_selector_type_template_index_0_index_vue__ = __webpack_require__(22);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
@@ -44,12 +44,12 @@ var normalizeComponent = __webpack_require__(1)
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-5ec418c0"
+var __vue_scopeId__ = "data-v-492ea4e0"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_mpvue_loader_lib_selector_type_script_index_0_index_vue__["a" /* default */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_mpvue_loader_lib_template_compiler_index_id_data_v_5ec418c0_hasScoped_true_transformToRequire_video_src_source_src_img_src_image_xlink_href_fileExt_template_wxml_script_js_style_wxss_platform_wx_node_modules_mpvue_loader_lib_selector_type_template_index_0_index_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_mpvue_loader_lib_template_compiler_index_id_data_v_492ea4e0_hasScoped_true_transformToRequire_video_src_source_src_img_src_image_xlink_href_fileExt_template_wxml_script_js_style_wxss_platform_wx_node_modules_mpvue_loader_lib_selector_type_template_index_0_index_vue__["a" /* default */],
   __vue_styles__,
   __vue_scopeId__,
   __vue_module_identifier__
@@ -65,9 +65,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5ec418c0", Component.options)
+    hotAPI.createRecord("data-v-492ea4e0", Component.options)
   } else {
-    hotAPI.reload("data-v-5ec418c0", Component.options)
+    hotAPI.reload("data-v-492ea4e0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -90,7 +90,25 @@ if (false) {(function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_card__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_card__ = __webpack_require__(3);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -136,7 +154,14 @@ if (false) {(function () {
       userInfo: {
         nickName: 'mpvue',
         avatarUrl: 'http://mpvue.com/assets/logo.png'
-      }
+      },
+      search_value: '想搜啥呀',
+      advertises: ['/static/images/adve1.jpg', '/static/images/adve2.jpg', '/static/images/adve3.jpg'],
+      theme_img_one: ['/static/images/books.png', '/static/images/clothes.png', '/static/images/electric.png', '/static/images/food.png'],
+      theme_title_one: ['教辅', '服饰', '电器', '食物'],
+      theme_img_two: ['/static/images/makeup.png', '/static/images/transformation.png', '/static/images/wallet.png', '/static/images/see_more.png'],
+      theme_title_two: ['彩妆', '交通', '数码', '更多'],
+      gift_package: '/static/images/gift_package.png'
     };
   },
 
@@ -174,12 +199,83 @@ if (false) {(function () {
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     attrs: {
-      "eventid": '3'
+      "eventid": '1'
     },
     on: {
       "click": _vm.clickHandle
     }
+  }, [_c('van-search', {
+    attrs: {
+      "value": _vm.search_value,
+      "placeholder": "请输入搜索关键词",
+      "mpcomid": '0'
+    }
+  }), _vm._v(" "), _c('view', {
+    staticClass: "swiper-view"
+  }, [_c('swiper', {
+    staticClass: "swiper",
+    attrs: {
+      "indicator-dots": "true",
+      "circular": "",
+      "autoplay": "true",
+      "interval": "5000",
+      "duration": "1000"
+    }
+  }, _vm._l((_vm.advertises), function(img, index) {
+    return _c('block', {
+      key: img.id
+    }, [_c('swiper-item', {
+      attrs: {
+        "mpcomid": '1_' + index
+      }
+    }, [_c('view', {
+      staticClass: "swiper-box"
+    }, [_c('img', {
+      staticClass: "slide-image",
+      attrs: {
+        "src": img,
+        "mode": "aspectFill"
+      }
+    })])])], 1)
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "panel"
   }, [_c('div', {
+    staticClass: "theme-panel"
+  }, [_c('view', {
+    staticClass: "theme-row"
+  }, _vm._l((_vm.theme_img_one), function(img, index) {
+    return _c('view', {
+      key: img.id,
+      staticClass: "theme-box"
+    }, [_c('img', {
+      staticClass: "theme-img",
+      attrs: {
+        "src": img
+      }
+    }), _vm._v(" "), _c('label', {
+      staticClass: "theme-title"
+    }, [_vm._v(_vm._s(_vm.theme_title_one[index]))])], 1)
+  })), _vm._v(" "), _c('view', {
+    staticClass: "theme-row"
+  }, _vm._l((_vm.theme_img_two), function(img, index) {
+    return _c('view', {
+      key: img.id,
+      staticClass: "theme-box"
+    }, [_c('img', {
+      staticClass: "theme-img",
+      attrs: {
+        "src": img
+      }
+    }), _vm._v(" "), _c('label', {
+      staticClass: "theme-title"
+    }, [_vm._v(_vm._s(_vm.theme_title_two[index]))])], 1)
+  }))]), _vm._v(" "), _c('img', {
+    attrs: {
+      "id": "gift_package",
+      "src": _vm.gift_package,
+      "mode": "aspectFill"
+    }
+  })]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "userinfo",
     attrs: {
       "eventid": '0'
@@ -194,7 +290,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       "background-size": "cover"
     }
   }) : _vm._e(), _vm._v(" "), _c('img', {
-    staticClass: "userinfo-avatar",
+    staticClass: "000000000\n    +userinfo-avatar",
     attrs: {
       "src": "/static/images/user.png",
       "background-size": "cover"
@@ -204,87 +300,32 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
   }, [_c('card', {
     attrs: {
       "text": _vm.userInfo.nickName,
-      "mpcomid": '0'
+      "mpcomid": '2'
     }
-  })], 1)]), _vm._v(" "), _c('div', {
-    staticClass: "usermotto"
-  }, [_c('div', {
-    staticClass: "user-motto"
-  }, [_c('card', {
-    attrs: {
-      "text": _vm.motto,
-      "mpcomid": '1'
-    }
-  })], 1)]), _vm._v(" "), _c('form', {
-    staticClass: "form-container"
-  }, [_c('input', {
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "value": _vm.motto,
-      "placeholder": "v-model"
-    }
-  }), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.motto),
-      expression: "motto"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "placeholder": "v-model",
-      "eventid": '1'
-    },
-    domProps: {
-      "value": (_vm.motto)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.motto = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model.lazy",
-      value: (_vm.motto),
-      expression: "motto",
-      modifiers: {
-        "lazy": true
-      }
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "placeholder": "v-model.lazy",
-      "eventid": '2'
-    },
-    domProps: {
-      "value": (_vm.motto)
-    },
-    on: {
-      "change": function($event) {
-        _vm.motto = $event.target.value
-      }
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "counter",
-    attrs: {
-      "href": "/pages/counter/main"
-    }
-  }, [_vm._v("去往Vuex示例页面")]), _vm._v(" "), _vm._m(0)], 1)
+  })], 1)])], 1)
 }
 var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "all"
+    staticClass: "panel"
   }, [_c('div', {
-    staticClass: "left"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "right"
-  })])
+    staticClass: "item-panel"
+  }, [_c('div', {
+    staticClass: "item-img-box"
+  }, [_c('img', {
+    staticClass: "item-img",
+    attrs: {
+      "src": "/static/images/jeans.jpg",
+      "mode": "aspectFill"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "item-img-box"
+  }, [_c('img', {
+    staticClass: "item-img",
+    attrs: {
+      "src": "/static/images/jeans.jpg",
+      "mode": "aspectFill"
+    }
+  })])])])
 }]
 render._withStripped = true
 var esExports = { render: render, staticRenderFns: staticRenderFns }
@@ -292,7 +333,7 @@ var esExports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-5ec418c0", esExports)
+     require("vue-hot-reload-api").rerender("data-v-492ea4e0", esExports)
   }
 }
 

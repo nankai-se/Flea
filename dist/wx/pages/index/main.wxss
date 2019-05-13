@@ -1,47 +1,101 @@
 @import "../../common/vendor.wxss";
 
-.userinfo.data-v-5ec418c0 {
+.swiper-view.data-v-492ea4e0 {
+  width: 100%;
+  height: 30%;
+  box-sizing: border-box;
+  z-index: 0;
+}
+swiper-item image.data-v-492ea4e0 {
+  width: 100%;
+  align-items: center;
+}
+.panel.data-v-492ea4e0 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(249, 250, 250);
+}
+.theme-panel.data-v-492ea4e0 {
+  width: 95%;
+  margin-top: -14rpx;
+  z-index: 1;
+  border-radius: 3%;
+  background-color: white;
+}
+.theme-row.data-v-492ea4e0 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.theme-box.data-v-492ea4e0 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.theme-img.data-v-492ea4e0 {
+  max-height: 120rpx;
+  max-width: 120rpx;
+  margin-left: 30rpx;
+  margin-right: 30rpx;
+  margin-top: 10rpx;
+}
+.theme-title.data-v-492ea4e0 {
+  color: rgb(77, 77, 77);
+  font-size: 30rpx;
+  margin-left: 58rpx;
+  margin-right: 58rpx;
+  margin-bottom: 10rpx;
+}
+.item-panel.data-v-492ea4e0 {
+  display: flex;
+  flex-direction: row;
+  width: 95%;
+}
+.item-img-box.data-v-492ea4e0 {
+  position: relative;
+  width: calc(50% - 20rpx);
+  height: 0;
+  padding-bottom: calc(50% - 20rpx);
+  margin-right: 10rpx;
+  margin-left: 10rpx;
+}
+.item-img.data-v-492ea4e0 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 5%;
+  border-top-right-radius: 5%;
+}
+.userinfo.data-v-492ea4e0 {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.userinfo-avatar.data-v-5ec418c0 {
+.userinfo-avatar.data-v-492ea4e0 {
   width: 128rpx;
   height: 128rpx;
   margin: 20rpx;
   border-radius: 50%;
 }
-.userinfo-nickname.data-v-5ec418c0 {
+.userinfo-nickname.data-v-492ea4e0 {
   color: #aaa;
 }
-.usermotto.data-v-5ec418c0 {
+.usermotto.data-v-492ea4e0 {
   margin-top: 300rpx;
 }
-.form-control.data-v-5ec418c0 {
+.form-control.data-v-492ea4e0 {
   display: block;
   padding: 0 24rpx;
   margin-bottom: 10rpx;
   border: 2rpx solid #ccc;
 }
-.all.data-v-5ec418c0 {
-  width: 750rpx;
-  height: 100rpx;
-  background-color: blue;
-}
-.all.data-v-5ec418c0:after {
-  display: block;
-  content: '';
-  clear: both;
-}
-.left.data-v-5ec418c0 {
-  float: left;
-  width: 300rpx;
-  height: 100rpx;
-  background-color: red;
-}
-.right.data-v-5ec418c0 {
-  float: left;
-  width: 450rpx;
-  height: 100rpx;
-  background-color: green;
+#gift_package.data-v-492ea4e0 {
+  max-height: 100rpx;
+  width: 95%;
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
 }
