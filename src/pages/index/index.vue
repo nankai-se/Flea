@@ -1,6 +1,6 @@
 <template>
-  <div @click="clickHandle">
-    <van-search :value="search_value" placeholder="请输入搜索关键词"></van-search>
+  <div>
+    <search></search>
     <view class="swiper-view">
       <swiper class="swiper" indicator-dots="true" circular autoplay="true" interval="5000" duration="1000">
         <block v-for="img in advertises" v-bind:key="img.id">
@@ -31,27 +31,19 @@
     </div>
     <view class="panel">
       <div class="beforeItem" v-text="before_item_text"></div>
-      <div class="noGoods-panel" v-if="!hasGoods" v-text="noGoods"></div>
-      <view class="item-panel" v-if="hasGoods">
-        <itemcard v-for="goods in goodsLists" :key="goods.id" :img="goods['img']" :price="goods['price']"></itemcard>
-      </view>
-      <div class="noMoreGoods-panel" v-if="isNoMore" v-text="noMoreGoods"></div>
+      <itempanel></itempanel>
     </view>
   </div>
 </template>
 
 <script>
-import itemcard from '../../components/itemcard.vue'
+import itempanel from '../../components/itempanel.vue'
+import search from '../../components/search.vue'
 
 export default {
   data () {
     return {
-      motto: 'Hello miniprograme',
-      userInfo: {
-        nickName: 'mpvue',
-        avatarUrl: 'http://mpvue.com/assets/logo.png'
-      },
-      search_value: '想搜啥呀',
+      searchValue: '',
       advertises: [
         'cloud://idwc.6964-idwc/static/images/adve1.jpg',
         'cloud://idwc.6964-idwc/static/images/adve2.jpg',
@@ -82,62 +74,17 @@ export default {
         '更多'
       ],
       gift_package: 'cloud://idwc.6964-idwc/static/images/gift_package.png',
-      before_item_text: '--- 好物推荐 ---',
-      noGoods: '暂时没有商品，过会再来吧~',
-      noMoreGoods: '没有更多商品啦~',
-      amount: 0,
-      goodsLists: [],
-      hasGoods: false,
-      isNoMore: false
+      before_item_text: '--- 好物推荐 ---'
     }
   },
   components: {
-    itemcard
-  },
-  onLoad () {
-    wx.cloud.init({
-      env: 'idwc',
-      traceUser: true
-    })
-    this.getGoods(0)
-  },
-  onUnload () {
-    this.clearCache()
-  },
-  onPullDownRefresh () {
-    this.clearCache()
-    this.getGoods(0)
-  },
-  onReachBottom () {
-    this.getGoods(this.amount)
+    itempanel,
+    search
   },
   methods: {
-    clearCache () {
-      this.amount = 0
-      this.goodsLists = []
-    },
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
-      } else {
-        mpvue.navigateTo({ url })
-      }
-    },
-    clickHandle (ev) {
-      console.log('clickHandle:', ev)
-      // throw {message: 'custom test'}
-    },
     getGoods (amount) {
-      const MAX_LIMIT = 12
       const db = wx.cloud.database()
-      db.collection('test_yunfan').doc('613a1989-b100-4904-85fe-2528cbb3a9b5')
-        .get({
-          success (res) {
-            console.log('success')
-          }
-        })
-      db.collection('goods').orderBy('release_time', 'asc').skip(this.amount).limit(MAX_LIMIT)
+      db.collection('goods').orderBy('release_time', 'asc').skip(this.amount).limit(this.pageSize)
         .get()
         .then(res => {
           console.log('res: ', res)
@@ -157,9 +104,20 @@ export default {
         .catch(err => {
           console.error(err)
         })
+    },
+    // onSearch () {
+    //   console.log('click on onsearch')
+    //   this.goSearchResult()
+    // },
+    goSearchResult (e) {
+      const searchValue = e.detail.searchValue
+      console.log('goSearchResult:', searchValue)
+      const url = `/pages/searchresult/main?searchValue=${searchValue}`
+      mpvue.redirectTo({
+        url
+      })
     }
   },
-
   created () {
     // let app = getApp()
   }
@@ -229,25 +187,6 @@ swiper-item image {
   margin-top: 10px;
   font-size: 18px;
   color:rgb(200, 67, 67);
-}
-
-.item-panel {
-  width: 95%;
-}
-
-.noGoods-panel {
-  color: rgb(177, 177, 177);
-  background-color: rgb(249, 250, 250);
-  height: 200px;
-  margin-top: 50px;
-}
-
-.noMoreGoods-panel {
-  color: rgb(177, 177, 177);
-  background-color: rgb(249, 250, 250);
-  height: 50px;
-  margin-top: 20px;
-  font-size: 15px;
 }
 
 
