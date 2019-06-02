@@ -1,10 +1,10 @@
 <template>
   <view class="search-wrapper">
     <van-search
-      :value="searchValue"
+      v-bind:value="searchValue"
       placeholder="请输入搜索关键词"
       use-action-slot
-      :search="onSearch">
+      @change="onChange">
     <view slot="action" @click="onSearch">搜索</view>
     </van-search>
   </view>
@@ -12,10 +12,6 @@
 
 <script>
 export default {
-  props: {
-    img: String,
-    price: Number
-  },
   data () {
     return {
       searchValue: ''
@@ -23,9 +19,22 @@ export default {
   },
   methods: {
     onSearch () {
-      console.log('click on onsearch')
+      const searchValue = this.searchValue.split(' ')
+      console.log('click on onsearch:', searchValue)
       // this.goSearchResult()
-      this.triggerEvent('goSearchResult', this.searchValue)
+      this.$emit('goSearch', searchValue)
+    },
+    onChange (e) {
+      // console.log('change target:', e.target)
+      let value = ''
+      for (let i = 0; ; i++) {
+        if (e.target[i]) {
+          value += e.target[i]
+        } else {
+          break
+        }
+      }
+      this.searchValue = value
     }
   }
 }
