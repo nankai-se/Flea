@@ -1,15 +1,15 @@
 require("../../common/manifest.js")
 require("../../common/vendor.js")
-global.webpackJsonpMpvue([3],{
+global.webpackJsonpMpvue([4],{
 
-/***/ 15:
+/***/ 24:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(25);
 
 
 
@@ -25,18 +25,18 @@ app.$mount();
 
 /***/ }),
 
-/***/ 16:
+/***/ 25:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_mpvue_loader_lib_selector_type_script_index_0_index_vue__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_mpvue_loader_lib_template_compiler_index_id_data_v_492ea4e0_hasScoped_true_transformToRequire_video_src_source_src_img_src_image_xlink_href_fileExt_template_wxml_script_js_style_wxss_platform_wx_node_modules_mpvue_loader_lib_selector_type_template_index_0_index_vue__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_mpvue_loader_lib_selector_type_script_index_0_index_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_mpvue_loader_lib_template_compiler_index_id_data_v_492ea4e0_hasScoped_true_transformToRequire_video_src_source_src_img_src_image_xlink_href_fileExt_template_wxml_script_js_style_wxss_platform_wx_node_modules_mpvue_loader_lib_selector_type_template_index_0_index_vue__ = __webpack_require__(31);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(17)
+  __webpack_require__(26)
 }
-var normalizeComponent = __webpack_require__(1)
+var normalizeComponent = __webpack_require__(0)
 /* script */
 
 /* template */
@@ -79,14 +79,14 @@ if (false) {(function () {
 
 /***/ }),
 
-/***/ 17:
+/***/ 26:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 18:
+/***/ 27:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -179,9 +179,10 @@ if (false) {(function () {
         global.mpvue.navigateTo({ url: url });
       }
     },
-    clickHandle: function clickHandle(ev) {
-      console.log('clickHandle:', ev);
-      // throw {message: 'custom test'}
+    navigate: function navigate(e) {
+      console.log(e);
+      var url = '../goodslist/main';
+      global.mpvue.navigateTo({ url: url });
     }
   },
 
@@ -192,19 +193,12 @@ if (false) {(function () {
 
 /***/ }),
 
-/***/ 22:
+/***/ 31:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    attrs: {
-      "eventid": '1'
-    },
-    on: {
-      "click": _vm.clickHandle
-    }
-  }, [_c('van-search', {
+  return _c('div', [_c('van-search', {
     attrs: {
       "value": _vm.search_value,
       "placeholder": "请输入搜索关键词",
@@ -246,7 +240,15 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
   }, _vm._l((_vm.theme_img_one), function(img, index) {
     return _c('view', {
       key: img.id,
-      staticClass: "theme-box"
+      staticClass: "theme-box",
+      attrs: {
+        "eventid": '0_' + index
+      },
+      on: {
+        "click": function($event) {
+          _vm.navigate(_vm.theme_title_one[index])
+        }
+      }
     }, [_c('img', {
       staticClass: "theme-img",
       attrs: {
@@ -260,7 +262,15 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
   }, _vm._l((_vm.theme_img_two), function(img, index) {
     return _c('view', {
       key: img.id,
-      staticClass: "theme-box"
+      staticClass: "theme-box",
+      attrs: {
+        "eventid": '1_' + index
+      },
+      on: {
+        "click": function($event) {
+          _vm.navigate(_vm.theme_title_one[index])
+        }
+      }
     }, [_c('img', {
       staticClass: "theme-img",
       attrs: {
@@ -278,7 +288,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
   })]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "userinfo",
     attrs: {
-      "eventid": '0'
+      "eventid": '2'
     },
     on: {
       "click": _vm.bindViewTap
@@ -339,4 +349,4 @@ if (false) {
 
 /***/ })
 
-},[15]);
+},[24]);

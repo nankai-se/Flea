@@ -1,5 +1,5 @@
 <template>
-  <div @click="clickHandle">
+  <div>
     <van-search :value="search_value" placeholder="请输入搜索关键词"></van-search>
     <view class="swiper-view">
       <swiper class="swiper" indicator-dots="true" circular autoplay="true" interval="5000" duration="1000">
@@ -15,13 +15,13 @@
     <div class="panel">
       <div class="theme-panel">
         <view class="theme-row">
-          <view class="theme-box" v-for="(img,index) in theme_img_one" :key="img.id">
+          <view class="theme-box" @click="navigate(theme_title_one[index])" v-for="(img,index) in theme_img_one" :key="img.id">
             <img class="theme-img" :src="img"/>
             <label class="theme-title">{{theme_title_one[index]}}</label>
           </view>
         </view>
         <view class="theme-row">
-          <view class="theme-box" v-for="(img,index) in theme_img_two" :key="img.id">
+          <view class="theme-box" @click="navigate(theme_title_one[index])" v-for="(img,index) in theme_img_two" :key="img.id">
             <img class="theme-img" :src="img"/>
             <label class="theme-title">{{theme_title_two[index]}}</label>
           </view>
@@ -109,9 +109,10 @@ export default {
         mpvue.navigateTo({ url })
       }
     },
-    clickHandle (ev) {
-      console.log('clickHandle:', ev)
-      // throw {message: 'custom test'}
+    navigate (e) {
+      console.log(e)
+      const url = '../goodslist/main'
+      mpvue.navigateTo({ url })
     }
   },
 
