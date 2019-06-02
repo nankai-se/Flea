@@ -1,6 +1,6 @@
 <template>
   <div>
-    <search></search>
+    <search @goSearch="goSearchResult"></search>
     <view class="swiper-view">
       <swiper class="swiper" indicator-dots="true" circular autoplay="true" interval="5000" duration="1000">
         <block v-for="img in advertises" v-bind:key="img.id">
@@ -31,7 +31,13 @@
     </div>
     <view class="panel">
       <div class="beforeItem" v-text="before_item_text"></div>
-      <itempanel></itempanel>
+      <view class="panel">
+        <div class="noGoods-panel" v-if="!hasGoods" v-text="noGoods"></div>
+        <div v-if="hasGoods">
+          <itempanel :goodsLists=goodsLists></itempanel>
+        </div>
+        <div class="noMoreGoods-panel" v-if="isNoMore" v-text="noMoreGoods"></div>
+      </view>
     </view>
   </div>
 </template>
@@ -43,7 +49,6 @@ import search from '../../components/search.vue'
 export default {
   data () {
     return {
-      searchValue: '',
       advertises: [
         'cloud://idwc.6964-idwc/static/images/adve1.jpg',
         'cloud://idwc.6964-idwc/static/images/adve2.jpg',
@@ -74,17 +79,55 @@ export default {
         '更多'
       ],
       gift_package: 'cloud://idwc.6964-idwc/static/images/gift_package.png',
-      before_item_text: '--- 好物推荐 ---'
+      before_item_text: '--- 好物推荐 ---',
+      noGoods: '暂时没有商品，过会再来吧~',
+      hasGoods: false,
+      noMoreGoods: '没有更多商品啦~',
+      amount: 0,
+      goodsLists: [],
+      isNoMore: false,
+      pageSize: 12
     }
   },
   components: {
     itempanel,
     search
   },
+  onLoad () {
+    wx.cloud.init({
+      env: 'idwc',
+      traceUser: true
+    })
+    this.getGoods(0)
+    // console.log('props', this.searchValue)
+  },
+  onUnload () {
+    this.clearCache()
+  },
+  onPullDownRefresh () {
+    this.clearCache()
+    this.getGoods(this.amount)
+  },
+  onReachBottom () {
+    this.getGoods(this.amount)
+  },
   methods: {
+    clearCache () {
+      this.amount = 0
+      this.goodsLists = []
+      this.getGoods(this.amount)
+    },
+    goSearchResult (searchValue) {
+      console.log('before:', searchValue)
+      // const searchValue = e
+      const url = `/pages/searchresult/main?searchValue=${searchValue}`
+      mpvue.redirectTo({
+        url
+      })
+    },
     getGoods (amount) {
       const db = wx.cloud.database()
-      db.collection('goods').orderBy('release_time', 'asc').skip(this.amount).limit(this.pageSize)
+      db.collection('goods').orderBy('release_time', 'asc').skip(amount).limit(this.pageSize)
         .get()
         .then(res => {
           console.log('res: ', res)
@@ -104,22 +147,7 @@ export default {
         .catch(err => {
           console.error(err)
         })
-    },
-    // onSearch () {
-    //   console.log('click on onsearch')
-    //   this.goSearchResult()
-    // },
-    goSearchResult (e) {
-      const searchValue = e.detail.searchValue
-      console.log('goSearchResult:', searchValue)
-      const url = `/pages/searchresult/main?searchValue=${searchValue}`
-      mpvue.redirectTo({
-        url
-      })
     }
-  },
-  created () {
-    // let app = getApp()
   }
 }
 </script>
@@ -189,11 +217,34 @@ swiper-item image {
   color:rgb(200, 67, 67);
 }
 
-
 #gift_package {
   max-height: 50px;
   width: 95%;
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.noGoods-panel {
+  color: rgb(177, 177, 177);
+  background-color: rgb(249, 250, 250);
+  height: 200px;
+  margin-top: 50px;
+}
+
+.noMoreGoods-panel {
+  color: rgb(177, 177, 177);
+  background-color: rgb(249, 250, 250);
+  height: 50px;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(249, 250, 250);
+}
+
 </style>
