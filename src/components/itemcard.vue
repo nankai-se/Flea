@@ -4,7 +4,7 @@
       <img class="item-img" :src="img" mode="aspectFill"/>
     </view>
     <div class="item-tag">
-      <span class="price-tag">?</span><strong class="price-tag" v-text="price"></strong>
+      <span class="price-tag">￥</span><strong class="price-tag" v-text="price"></strong>
     </div>
   </div>
 </template>

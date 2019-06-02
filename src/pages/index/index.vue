@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-search :value="search_value" placeholder="请输入搜索关键词"></van-search>
+    <search></search>
     <view class="swiper-view">
       <swiper class="swiper" indicator-dots="true" circular autoplay="true" interval="5000" duration="1000">
         <block v-for="img in advertises" v-bind:key="img.id">
@@ -29,40 +29,21 @@
       </div>
       <img id="gift_package" :src="gift_package" mode="aspectFill"/>
     </div>
-    <div class="panel">
-      <div class="item-panel">
-        <div class="item-img-box">
-          <img class="item-img" src="cloud://idwc.6964-idwc/static/images/jeans.jpg" mode="aspectFill"/>
-        </div>
-        <div class="item-img-box">
-          <img class="item-img" src="cloud://idwc.6964-idwc/static/images/jeans.jpg" mode="aspectFill"/>
-        </div>
-      </div>
-    </div>
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <img class="000000000
-      +userinfo-avatar" src="cloud://idwc.6964-idwc/static/images/user.png" background-size="cover" />
-
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-      </div>
-    </div>
+    <view class="panel">
+      <div class="beforeItem" v-text="before_item_text"></div>
+      <itempanel></itempanel>
+    </view>
   </div>
 </template>
 
 <script>
-import card from '@/components/card'
+import itempanel from '../../components/itempanel.vue'
+import search from '../../components/search.vue'
 
 export default {
   data () {
     return {
-      motto: 'Hello miniprograme',
-      userInfo: {
-        nickName: 'mpvue',
-        avatarUrl: 'http://mpvue.com/assets/logo.png'
-      },
-      search_value: '想搜啥呀',
+      searchValue: '',
       advertises: [
         'cloud://idwc.6964-idwc/static/images/adve1.jpg',
         'cloud://idwc.6964-idwc/static/images/adve2.jpg',
@@ -92,30 +73,51 @@ export default {
         '数码',
         '更多'
       ],
-      gift_package: 'cloud://idwc.6964-idwc/static/images/gift_package.png'
+      gift_package: 'cloud://idwc.6964-idwc/static/images/gift_package.png',
+      before_item_text: '--- 好物推荐 ---'
     }
   },
-
   components: {
-    card
+    itempanel,
+    search
   },
-
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
-      } else {
-        mpvue.navigateTo({ url })
-      }
+    getGoods (amount) {
+      const db = wx.cloud.database()
+      db.collection('goods').orderBy('release_time', 'asc').skip(this.amount).limit(this.pageSize)
+        .get()
+        .then(res => {
+          console.log('res: ', res)
+          if (res.data.length > 0) {
+            for (let i = 0; i < res.data.length; i++) {
+              this.goodsLists.push({
+                'img': res.data[i]['fileID'],
+                'price': res.data[i]['price']
+              })
+            }
+            this.amount += res.data.length
+          } else {
+            this.isNoMore = true
+          }
+          this.hasGoods = this.amount > 0
+        })
+        .catch(err => {
+          console.error(err)
+        })
     },
-    navigate (e) {
-      console.log(e)
-      const url = '../goodslist/main'
-      mpvue.navigateTo({ url })
+    // onSearch () {
+    //   console.log('click on onsearch')
+    //   this.goSearchResult()
+    // },
+    goSearchResult (e) {
+      const searchValue = e.detail.searchValue
+      console.log('goSearchResult:', searchValue)
+      const url = `/pages/searchresult/main?searchValue=${searchValue}`
+      mpvue.redirectTo({
+        url
+      })
     }
   },
-
   created () {
     // let app = getApp()
   }
@@ -181,57 +183,12 @@ swiper-item image {
   margin-bottom: 5px;
 }
 
-.item-panel {
-  display: flex;
-  flex-direction: row;
-  width: 95%;
+.beforeItem {
+  margin-top: 10px;
+  font-size: 18px;
+  color:rgb(200, 67, 67);
 }
 
-
-.item-img-box {
-  position: relative;
-  width: calc(50% - 10px);
-  height: 0px;
-  padding-bottom: calc(50% - 10px);
-  margin-right: 5px;
-  margin-left:5px;
-}
-
-.item-img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-top-left-radius: 5%;
-  border-top-right-radius: 5%;
-}
-
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
 
 #gift_package {
   max-height: 50px;
