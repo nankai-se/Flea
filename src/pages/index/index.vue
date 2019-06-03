@@ -15,13 +15,13 @@
     <div class="panel">
       <div class="theme-panel">
         <view class="theme-row">
-          <view class="theme-box" @click="navigate(theme_title_one[index])" v-for="(img,index) in theme_img_one" :key="img.id">
+          <view class="theme-box" v-for="(img,index) in theme_img_one" :key="img.id">
             <img class="theme-img" :src="img"/>
             <label class="theme-title">{{theme_title_one[index]}}</label>
           </view>
         </view>
         <view class="theme-row">
-          <view class="theme-box" @click="navigate(theme_title_one[index])" v-for="(img,index) in theme_img_two" :key="img.id">
+          <view class="theme-box" v-for="(img,index) in theme_img_two" :key="img.id">
             <img class="theme-img" :src="img"/>
             <label class="theme-title">{{theme_title_two[index]}}</label>
           </view>
