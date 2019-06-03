@@ -4,6 +4,8 @@
       <div class="tabs">
         <van-tabs :active="active" @change="onChange">
           <van-tab title="全部">
+            <div class="noGoods-panel" v-if="!hasOrder" v-text="noOrders"></div>
+            <div v-if="hasOrder">
             <view v-for="item in ordersList" :key="item">
               <van-panel :title="item.panel.title" :desc="item.panel.desc" :status="item.panel.status" use-footer-slot>
                 <view>
@@ -23,10 +25,14 @@
                 </view>
               </van-panel>
             </view>
+            </div>
+            <div class="noMoreOrders-panel" v-if="orderIsNoMore" v-text="noMoreOrders"></div>
           </van-tab>
       
  
           <van-tab title="待付款">
+            <div class="noOrders-panel" v-if="!hasUnpaidOrder" v-text="noOrders"></div>
+            <div v-if="hasUnpaidOrder">
             <view v-for="item in orderStatusUnpaid" :key="item">
               <van-panel :title="item.panel.title" :desc="item.panel.desc" :status="item.panel.status" use-footer-slot>
                 <view>
@@ -45,50 +51,60 @@
                 </view>
               </van-panel>
             </view>
+            </div>
+            <div class="noMoreOrders-panel" v-if="unpaidIsNoMore" v-text="noMoreOrders"></div>
           </van-tab>
 
 
           <van-tab title="待发货">
-            <view v-for="item in orderStatusUndelivery" :key="item">
-              <van-panel :title="item.panel.title" :desc="item.panel.desc" :status="item.panel.status" use-footer-slot>
-                <view>
-                  <van-card
-                      :num="item.card.num"
-                      :price="item.card.price"
-                      :desc="item.card.desc"
-                      :title="item.card.title"
-                      :thumb="item.card.thumb"
-                    >
-                      <view slot="footer" >
-                            <van-button size="small" round="true">评价订单</van-button>
-                            <van-button size="small" round="true">删除订单</van-button>
-                      </view>
-                  </van-card>
-                </view>
-              </van-panel>
-            </view>
+            <div class="noOrders-panel" v-if="!hasUndeliveryOrder" v-text="noOrders"></div>
+            <div v-if="hasUndeliveryOrder">
+              <view v-for="item in orderStatusUndelivery" :key="item">
+                <van-panel :title="item.panel.title" :desc="item.panel.desc" :status="item.panel.status" use-footer-slot>
+                  <view>
+                    <van-card
+                        :num="item.card.num"
+                        :price="item.card.price"
+                        :desc="item.card.desc"
+                        :title="item.card.title"
+                        :thumb="item.card.thumb"
+                      >
+                        <view slot="footer" >
+                              <van-button size="small" round="true">评价订单</van-button>
+                              <van-button size="small" round="true">删除订单</van-button>
+                        </view>
+                    </van-card>
+                  </view>
+                </van-panel>
+              </view>
+            </div>
+            <div class="noMoreOrders-panel" v-if="undeliveryIsNoMore" v-text="noMoreOrders"></div>
           </van-tab>
 
 
           <van-tab title="待收货">
-            <view v-for="item in orderStatusUnreceived" :key="item">
-              <van-panel :title="item.panel.title" :desc="item.panel.desc" :status="item.panel.status" use-footer-slot>
-                <view>
-                  <van-card
-                      :num="item.card.num"
-                      :price="item.card.price"
-                      :desc="item.card.desc"
-                      :title="item.card.title"
-                      :thumb="item.card.thumb"
-                    >
-                      <view slot="footer" >
-                            <van-button size="small" round="true">评价订单</van-button>
-                            <van-button size="small" round="true">删除订单</van-button>
-                      </view>
-                  </van-card>
-                </view>
-              </van-panel>
-            </view>
+            <div class="noOrders-panel" v-if="!hasUnreceivedOrder" v-text="noOrders"></div>
+            <div v-if="hasUnreceivedOrder">
+              <view v-for="item in orderStatusUnreceived" :key="item">
+                <van-panel :title="item.panel.title" :desc="item.panel.desc" :status="item.panel.status" use-footer-slot>
+                  <view>
+                    <van-card
+                        :num="item.card.num"
+                        :price="item.card.price"
+                        :desc="item.card.desc"
+                        :title="item.card.title"
+                        :thumb="item.card.thumb"
+                      >
+                        <view slot="footer" >
+                              <van-button size="small" round="true">评价订单</van-button>
+                              <van-button size="small" round="true">删除订单</van-button>
+                        </view>
+                    </van-card>
+                  </view>
+                </van-panel>
+              </view>
+            </div>
+            <div class="noMoreOrders-panel" v-if="unreceivedIsNoMore" v-text="noMoreOrders"></div>
           </van-tab>
         </van-tabs>
       </div>
@@ -106,6 +122,8 @@ export default {
 
   data () {
     return {
+      noOrders: '暂时没有订单，过会再来吧~',
+      noMoreOrders: '没有更多订单啦~',
       active: 0,
       userId: '',
       pageSize: 10,
@@ -384,13 +402,19 @@ export default {
 </script>
 
 <style>
-.log-list {
-  display: flex;
-  flex-direction: column;
-  padding: 40rpx;
+
+.noOrders-panel {
+  color: rgb(177, 177, 177);
+  background-color: rgb(249, 250, 250);
+  height: 200px;
+  margin-top: 50px;
 }
 
-.log-item {
-  margin: 10rpx;
+.noMoreOrders-panel {
+  color: rgb(177, 177, 177);
+  background-color: rgb(249, 250, 250);
+  height: 50px;
+  margin-top: 20px;
+  font-size: 15px;
 }
 </style>

@@ -4,6 +4,8 @@
       <div class="tabs">
         <van-tabs :active="active" @change="onChange">
           <van-tab title="全部">
+            <div class="noGoods-panel" v-if="!hasAllGoods" v-text="noGoods"></div>
+            <div v-if="hasAllGoods">
             <view v-for="item in goodList" :key="item">
               <view>
                 <van-card
@@ -21,10 +23,14 @@
                 </van-card>
               </view>
             </view>
+            </div>
+          <div class="noMoreGoods-panel" v-if="allIsNoMore" v-text="noMoreGoods"></div> 
           </van-tab>
 
 
           <van-tab title="待售">
+            <div class="noGoods-panel" v-if="!hasUnsellGoods" v-text="noGoods"></div>
+            <div v-if="hasUnsellGoods">
             <view v-for="item in goodsStatusUnsell" :key="item">
               <view>
                 <van-card
@@ -42,10 +48,14 @@
                 </van-card>
               </view>
             </view>
+            </div>
+          <div class="noMoreGoods-panel" v-if="unSellIsNomore" v-text="noMoreGoods"></div> 
           </van-tab>
 
 
           <van-tab title="我卖出的">
+            <div class="noGoods-panel" v-if="!hasSoldGoods" v-text="noGoods"></div>
+            <div v-if="hasSoldGoods">
             <view v-for="item in goodsStatusSold" :key="item">
               <view>
                 <van-card
@@ -63,27 +73,33 @@
                 </van-card>
               </view>
             </view>
+            </div>
+          <div class="noMoreGoods-panel" v-if="soldIsNomore" v-text="noMoreGoods"></div> 
           </van-tab>
 
           
           <van-tab title="下架商品">
-            <view v-for="item in goodsStatusRemoved" :key="item">
-              <view>
-                <van-card
-                    :num="item.num"
-                    :price="item.price"
-                    :desc="item.desc"
-                    :title="item.title"
-                    :thumb="item.thumb"
-                    :tag="item.tag"
-                  >
-                    <view slot="footer" >
-                      <van-button size="mini" round="true">编辑</van-button>
-                      <van-button size="mini" round="true" disabled="true">下架</van-button>
-                    </view>
-                </van-card>
+            <div class="noGoods-panel" v-if="!hasRemovedGoods" v-text="noGoods"></div>
+            <div v-if="hasRemovedGoods">
+              <view v-for="item in goodsStatusRemoved" :key="item">
+                <view>
+                  <van-card
+                      :num="item.num"
+                      :price="item.price"
+                      :desc="item.desc"
+                      :title="item.title"
+                      :thumb="item.thumb"
+                      :tag="item.tag"
+                    >
+                      <view slot="footer" >
+                        <van-button size="mini" round="true">编辑</van-button>
+                        <van-button size="mini" round="true" disabled="true">下架</van-button>
+                      </view>
+                  </van-card>
+                </view>
               </view>
-            </view>
+            </div>
+          <div class="noMoreGoods-panel" v-if="removedIsNoMore" v-text="noMoreGoods"></div> 
           </van-tab>
           </van-tabs>
       </div>
@@ -412,5 +428,19 @@ export default {
 
 .log-item {
   margin: 10rpx;
+}
+.noGoods-panel {
+  color: rgb(177, 177, 177);
+  background-color: rgb(249, 250, 250);
+  height: 200px;
+  margin-top: 50px;
+}
+
+.noMoreGoods-panel {
+  color: rgb(177, 177, 177);
+  background-color: rgb(249, 250, 250);
+  height: 50px;
+  margin-top: 20px;
+  font-size: 15px;
 }
 </style>
