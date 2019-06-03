@@ -4,12 +4,13 @@
     "pages/logs/main",
     "pages/counter/main",
     "pages/searchresult/main",
-    "pages/list/main"
+    "pages/list/main",
+    "pages/goodslist/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "南开FLEA",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
