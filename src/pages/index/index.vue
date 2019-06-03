@@ -139,6 +139,7 @@ export default {
               })
             }
             this.amount += res.data.length
+            console.log('index good list:', this.goodsLists)
           } else {
             this.isNoMore = true
           }
