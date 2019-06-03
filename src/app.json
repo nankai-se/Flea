@@ -4,6 +4,8 @@
     "pages/logs/main",
     "pages/counter/main",
     "pages/goodslist/main"
+    "pages/searchresult/main",
+    "pages/list/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -34,7 +36,7 @@
       "selectedIconPath": "static/tabs/add.png"
     }, {
       "text": "消息",
-      "pagePath": "pages/logs/main",
+      "pagePath": "pages/list/main",
       "iconPath": "static/tabs/message.png",
       "selectedIconPath": "static/tabs/message-active.png"
     }, {

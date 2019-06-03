@@ -12,18 +12,7 @@
 import itemcard from './itemcard.vue'
 export default {
   props: {
-    searchValue: ['searchValue']
-  },
-  data () {
-    return {
-      noGoods: '暂时没有商品，过会再来吧~',
-      hasGoods: false,
-      noMoreGoods: '没有更多商品啦~',
-      amount: 0,
-      goodsLists: [],
-      isNoMore: false,
-      pageSize: 12
-    }
+    goodsLists: ['goodsLists']
   },
   components: {
     itemcard
@@ -80,26 +69,5 @@ export default {
 </script>
 
 <style>
-.noGoods-panel {
-  color: rgb(177, 177, 177);
-  background-color: rgb(249, 250, 250);
-  height: 200px;
-  margin-top: 50px;
-}
 
-.noMoreGoods-panel {
-  color: rgb(177, 177, 177);
-  background-color: rgb(249, 250, 250);
-  height: 50px;
-  margin-top: 20px;
-  font-size: 15px;
-}
-
-.panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: rgb(249, 250, 250);
-}
 </style>
