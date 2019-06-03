@@ -2,7 +2,7 @@
   <view class="panel">
     <div class="noGoods-panel" v-if="!hasGoods" v-text="noGoods"></div>
     <div v-if="hasGoods">
-      <itemcard v-for="goods in goodsLists" :key="goods.id" :img="goods['img']" :price="goods['price']"></itemcard>
+      <itemcard v-for="goods in goodsLists" :key="goods.id" :img="goods['img']" :price="goods['price']" :detail="goods['detail']"></itemcard>
     </div>
     <div class="noMoreGoods-panel" v-if="isNoMore" v-text="noMoreGoods"></div>
   </view>
@@ -61,7 +61,8 @@ export default {
             for (let i = 0; i < res.data.length; i++) {
               this.goodsLists.push({
                 'img': res.data[i]['fileID'],
-                'price': res.data[i]['price']
+                'price': res.data[i]['price'],
+                'detail': res.data[i]['detail']
               })
             }
             this.amount += res.data.length
