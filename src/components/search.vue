@@ -20,9 +20,9 @@ export default {
   methods: {
     onSearch () {
       const searchValue = this.searchValue.split(' ')
-      console.log('click on onsearch:', searchValue)
+      console.log('click on onsearch:', searchValue[0])
       // this.goSearchResult()
-      this.$emit('goSearch', searchValue)
+      this.$emit('goSearch', searchValue[0])
     },
     onChange (e) {
       // console.log('change target:', e.target)

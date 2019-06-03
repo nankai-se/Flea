@@ -1,6 +1,5 @@
 <template>
   <div>
-    <search @goSearch="handleSearch"></search>
     <view class="panel">
       <div class="noGoods-panel" v-if="!hasGoods" v-text="noGoods"></div>
       <div v-if="hasGoods">
@@ -14,6 +13,7 @@
 <script>
 import itempanel from '../../components/itempanel.vue'
 import search from '../../components/search.vue'
+import store from '../index/store'
 
 export default {
   data () {
@@ -21,9 +21,9 @@ export default {
       searchValue: '',
       fromValue: '',
       goodsLists: [],
-      noGoods: '暂时没有此类商品哦~ 敬请期待~',
+      noGoods: '暂时没有心愿商品哦~ 快去首页看看吧~',
       hasGoods: false,
-      noMoreGoods: '没有更多商品啦~',
+      noMoreGoods: '没有更多想买的啦~',
       isNoMore: false,
       amount: 0,
       pageSize: 16
@@ -33,10 +33,8 @@ export default {
     itempanel,
     search
   },
-  onLoad (opp) {
-    console.log('opp', opp.searchValue)
-    this.getSearchResults(opp.searchValue, this.amount)
-    this.fromValue = opp.searchValue
+  onLoad () {
+    this.getFavorites(this.amount)
   },
   onUnload () {
     this.clearCache()
@@ -57,40 +55,43 @@ export default {
       this.amount = 0
       this.goodsLists = []
     },
-    getSearchResults (value, amount) {
+    getFavorites (amount) {
       const db = wx.cloud.database()
-      db.collection('goods').where({
-        detail: db.RegExp({
-          regexp: value,
-          options: 'i'
-        })})
-        .skip(amount).limit(this.pageSize)
+      console.log('amount:', amount)
+      const userId = store.state.userId
+      console.log('userId:', userId)
+      db.collection('favorites').where({
+        user_id: userId
+      }).skip(amount).limit(this.pageSize)
         .get()
         .then(res => {
-          console.log('res: ', res)
-          if (res.data.length > 0) {
-            for (let i = 0; i < res.data.length; i++) {
-              this.goodsLists.push({
-                'img': res.data[i]['fileID'],
-                'price': res.data[i]['price']
-              })
-            }
-            this.amount += res.data.length
-          } else {
-            this.isNoMore = true
+          if (res.data[0].goods_id.length > 0) {
+            this.getGoods(res.data[0].goods_id)
+            this.hasGoods = true
           }
-          this.hasGoods = this.amount > 0
-        })
-        .catch(err => {
-          console.error(err)
         })
     },
-    handleSearch (value) {
-      this.clearCache()
-      this.getSearchResults(value, 0)
-      this.searchVaule = value
-      this.amount = 0
-      console.log('value', this.searchVaule)
+    getGoods (goodIds) {
+      const db = wx.cloud.database()
+      console.log('goodsid:', goodIds)
+      if (goodIds.length > 0) {
+        for (let i = 0; i < goodIds.length; i++) {
+          db.collection('goods').where({
+            _id: goodIds[i]
+          }).get().then(res => {
+            console.log('goods:', res)
+            console.log('type:', typeof this.goodsLists)
+            this.goodsLists.push({
+              'img': res.data[0]['fileID'],
+              'price': res.data[0]['price']
+            })
+            this.amount++
+            console.log('after:', this.goodsLists)
+          })
+        }
+      } else {
+        this.isNoMore = true
+      }
     }
   }
 }
@@ -99,7 +100,6 @@ export default {
 <style scoped>
 .noGoods-panel {
   color: rgb(177, 177, 177);
-  background-color: rgb(249, 250, 250);
   height: 200px;
   margin-top: 50px;
   align-items: center;
@@ -122,12 +122,4 @@ export default {
   justify-content: center;
 }
 
-.search-wrapper {
-  position: fixed;
-  top: 0px;
-  left: 0;
-  width: 95%;
-  z-index: 999;
-  margin-left: calc(2.5%);
-}
 </style>
