@@ -4,7 +4,7 @@
       <div class="tabs">
         <van-tabs :active="active" @change="onChange">
           <van-tab title="全部">
-            <view v-for="item in orderList" :key="item">
+            <view v-for="item in ordersList" :key="item">
               <van-panel :title="item.panel.title" :desc="item.panel.desc" :status="item.panel.status" use-footer-slot>
                 <view>
                   <van-card
@@ -97,19 +97,19 @@
 </template>
 
 <script>
-// import { formatTime } from '@/utils/index'
-import card from '@/components/card'
 
+import store from '../index/store'
 export default {
   components: {
-    card
+
   },
 
   data () {
     return {
       active: 0,
-      logs: [],
-      orderList: [
+      userId: '',
+      pageSize: 10,
+      ordersList: [
         {
           panel: {
             title: '南开学子',
@@ -167,47 +167,98 @@ export default {
           }
         }
       ],
-      imgUrls: [
-        'http://mss.sankuai.com/v1/mss_51a7233366a4427fa6132a6ce72dbe54/newsPicture/05558951-de60-49fb-b674-dd906c8897a6',
-        'http://mss.sankuai.com/v1/mss_51a7233366a4427fa6132a6ce72dbe54/coursePicture/0fbcfdf7-0040-4692-8f84-78bb21f3395d',
-        'http://mss.sankuai.com/v1/mss_51a7233366a4427fa6132a6ce72dbe54/management-school-picture/7683b32e-4e44-4b2f-9c03-c21f34320870'
-      ]
+      orderList: [
+
+      ],
+      unpaidOrderList: [
+
+      ],
+      undeliveryOrderList: [
+
+      ],
+      unreceivedOrderList: [
+
+      ],
+      order: {
+        all: this.orderList,
+        unpaid: this.unpaidOrderList,
+        undelivery: this.undeliveryOrderList,
+        unreceived: this.unreceivedOrderList
+      },
+      orderAmount: 0,
+      unpaidAmount: 0,
+      undeliveryAmount: 0,
+      unreceivedAmount: 0,
+      hasOrder: false,
+      hasUnpaidOrder: false,
+      hasUndeliveryOrder: false,
+      hasUnreceivedOrder: false,
+      orderIsNomore: false,
+      unpaidIsNoMore: false,
+      undeliveryIsNoMore: false,
+      unreceivedIsNoMore: false
     }
   },
   computed: {
     orderStatusFinish: function () {
-      return this.orderList.filter(function (item) {
+      return this.ordersList.filter(function (item) {
         return item.panel.status === '已完成'
       })
     },
     orderStatusUnpaid: function () {
-      return this.orderList.filter(function (item) {
+      return this.ordersList.filter(function (item) {
         return item.panel.status === '待付款'
       })
     },
     orderStatusUndelivery: function () {
-      return this.orderList.filter(function (item) {
+      return this.ordersList.filter(function (item) {
         return item.panel.status === '待发货'
       })
     },
     orderStatusUnreceived: function () {
-      return this.orderList.filter(function (item) {
+      return this.ordersList.filter(function (item) {
         return item.panel.status === '待收货'
       })
     }
   },
   created () {
-    // let logs
-    // if (mpvuePlatform === 'my') {
-    //   logs = mpvue.getStorageSync({key: 'logs'}).data || []
-    // } else {
-    //   logs = mpvue.getStorageSync('logs') || []
-    // }
-    // this.logs = logs.map(log => formatTime(new Date(log)))
+
   },
   onLoad (options) {
     this.active = options.active
+    switch (this.active) {
+      case 0:
+        this.getMyOrders(this.orderAmount, 'all', this.hasOrder, this.orderIsNomore)
+        break
+      case 1:
+        this.getOrders(this.unpaidAmount, 'unpaid', this.hasUnpaidOrder, this.unpaidIsNoMore)
+        break
+      case 2:
+        this.getOrders(this.undeliveryAmount, 'undelivery', this.hasUndeliveryOrder, this.undeliveryIsNoMore)
+        break
+      case 3:
+        this.getOrdes(this.unreceivedAmount, 'unreceived', this.hasUnreceivedOrder, this.unreceivedIsNoMore)
+        break
+    }
   },
+
+  onReachBottom () {
+    switch (this.active) {
+      case 0:
+        this.getMyOrders(this.orderAmount, 'all', this.hasOrder, this.orderIsNomore)
+        break
+      case 1:
+        this.getOrders(this.unpaidAmount, 'unpaid', this.hasUnpaidOrder, this.unpaidIsNoMore)
+        break
+      case 2:
+        this.getOrders(this.undeliveryAmount, 'undelivery', this.hasUndeliveryOrder, this.undeliveryIsNoMore)
+        break
+      case 3:
+        this.getOrdes(this.unreceivedAmount, 'unreceived', this.hasUnreceivedOrder, this.unreceivedIsNoMore)
+        break
+    }
+  },
+
   methods: {
     /**
      * @function
@@ -215,8 +266,117 @@ export default {
      * 或者打开这个页面的时候请求一次
      * 不同的tab使用filter从orderlist中选取
      */
-    onChange () {
+    onChange (e) {
+      let index = e.detail.index
+      switch (index) {
+        case 0:
+          this.getMyOrders(this.orderAmount, 'all', this.hasOrder, this.orderIsNomore)
+          break
+        case 1:
+          this.getOrders(this.unpaidAmount, 'unpaid', this.hasUnpaidOrder, this.unpaidIsNoMore)
+          break
+        case 2:
+          this.getOrders(this.undeliveryAmount, 'undelivery', this.hasUndeliveryOrder, this.undeliveryIsNoMore)
+          break
+        case 3:
+          this.getOrdes(this.unreceivedAmount, 'unreceived', this.hasUnreceivedOrder, this.unreceivedIsNoMore)
+          break
+      }
+    },
+    /**
+     * @function
+     * 获得所有订单
+     */
+    getMyOrders (amount, type, hasOrder, isNoMore) {
+      const userId = store.state.userId
+      const db = wx.cloud.database()
+      db.collection('order').where({
+        buyer_id: userId
+      }).skip(this.amount)
+        .limit(this.pageSize)
+        .get()
+        .then(
+          res => {
+            if (res.data.length > 0) {
+              hasOrder = true
+              for (let i = 0; i < res.data.length; i++) {
+                this.order[type].panel.push({
+                  'status': res.data[i]['order_state'],
+                  'order_id': res.data[i]['_id']
+                })
+              }
+              this.getGoods(res.data, isNoMore, amount, type)
+              this.getSellerInfo(res.data, isNoMore, amount, type)
+            }
+          }
+        )
+    },
 
+    getOrders (amount, type, hasOrder, isNoMore) {
+      const userId = store.state.userId
+      const db = wx.cloud.database()
+      db.collection('order').where({
+        buyer_id: userId,
+        order_state: type
+      }).skip(this.amount)
+        .limit(this.pageSize)
+        .get()
+        .then(
+          res => {
+            if (res.data.length > 0) {
+              hasOrder = true
+              for (let i = 0; i < res.data.length; i++) {
+                this.order[type].panel.push({
+                  'status': res.data[i]['order_state'],
+                  'order_id': res.data[i]['_id']
+                })
+              }
+              this.getGoods(res.data, isNoMore, amount, type)
+              this.getSellerInfo(res.data, isNoMore, amount, type)
+            }
+          }
+        )
+    },
+    getGoods (goodIds, isNoMore, amount, type) {
+      const db = wx.cloud.database()
+      console.log('goodsid:', goodIds)
+      if (goodIds.length > 0) {
+        for (let i = 0; i < goodIds.length; i++) {
+          db.collection('goods').where({
+            _id: goodIds[i]['goods_id']
+          }).get().then(res => {
+            console.log('goods:', res)
+            console.log('type:', typeof this.goodsLists)
+            this.order[type].card.push({
+              'desc': res.data[i]['detail'],
+              'title': res.data[i]['type'],
+              'thumb': res.data[i]['imgs'][0],
+              'price': res.data[0]['price'],
+              'num': 1
+            })
+            amount++
+          })
+        }
+      } else {
+        isNoMore = true
+      }
+    },
+    getSellerInfo (sellerIds, isNoMore, amount, type) {
+      const db = wx.cloud.database()
+      if (sellerIds.length > 0) {
+        for (let i = 0; i < sellerIds.length; i++) {
+          db.collection('user').where({
+            _id: sellerIds[i]['seller_id']
+          }).get().then(res => {
+            this.order[type].panel.push({
+              'title': res.data[i]['nickName'],
+              'desc': '暂无'
+            })
+          })
+        }
+      } else {
+        isNoMore = true
+      }
     }
   }
 

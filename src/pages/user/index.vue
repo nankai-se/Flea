@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="middle_panel">
-      <div class="wanted">
+      <div class="wanted" @click="showWantedList()">
         <van-icon class="icon" name="goods-collect-o" size="30px"/>
         心愿单
       </div>
@@ -117,7 +117,13 @@ export default {
       wx.navigateTo({
         url: '../object/main?active=' + index
       })
+    },
+    showWantedList () {
+      wx.navigateTo({
+        url: '../list/main'
+      })
     }
+
   }
 }
 </script>
