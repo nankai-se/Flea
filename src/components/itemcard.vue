@@ -8,10 +8,8 @@
       <span class="price-tag">￥</span><span class="price" v-text="price"></span>
       <span class="favorite">156人收藏</span>
       <div class="split-line"></div>
-      <view class="portrait-box">
-        <img class="portrait"  src="//img.yzcdn.cn/upload_files/2017/07/02/af5b9f44deaeb68000d7e4a711160c53.jpg"/>
-      </view>
       <span class="username">username</span>
+      <span class="location">八里台</span>
     </div>
   </div>
 </template>
@@ -78,9 +76,8 @@ export default {
 }
 
 .favorite {
-  float:right;
   font-size: 12px;
-  padding-right: 6px;
+  padding-left: 6px;
   color: rgb(158, 158, 158);
 }
 
@@ -107,10 +104,18 @@ export default {
 }
 
 .username {
-  float: right;
-  padding-left: 5px;
-  padding-right: 50px;
+  float: left;
+  padding-left: 6px;
+  padding-bottom: 5px;
   font-size: 14px;
   color: rgb(34, 34, 34);
+}
+
+.location {
+  float: right;
+  padding-right: 6px;
+  padding-bottom: 5px;
+  font-size: 12px;
+  color: rgb(158, 158, 158);
 }
 </style>

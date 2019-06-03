@@ -21,12 +21,27 @@ export default {
   },
   data () {
     return {
-      imageURL: '//img.yzcdn.cn/upload_files/2017/07/02/af5b9f44deaeb68000d7e4a711160c53.jpg'
     }
   },
   methods: {
     handle () {
       console.log('ddd')
+      // wx.getUserInfo({
+      //   success: function (res) {
+      //     var userInfo = res.userInfo // 用户基本信息
+      //     // var nickName = userInfo.nickName // 用户名
+      //     // var avatarUrl = userInfo.avatarUrl // 头像链接
+      //     // var gender = userInfo.gender // 性别 0：未知、1：男、2：女
+      //     // var province = userInfo.province // 所在省
+      //     // var city = userInfo.city // 所在市
+      //     // var country = userInfo.country // 所在国家
+      //     console.log(userInfo)
+      //   }
+      // })
+      const url = `/pages/goodsdetail/main?goodsId=10`
+      mpvue.redirectTo({
+        url
+      })
     }
   }
 }

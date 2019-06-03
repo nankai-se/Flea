@@ -21,6 +21,7 @@ export default {
       noMoreGoods: '没有更多商品啦~',
       amount: 0,
       goodsLists: [],
+      favoriteLists: [],
       isNoMore: false,
       pageSize: 12
     }

@@ -5,7 +5,8 @@
     "pages/counter/main",
     "pages/searchresult/main",
     "pages/list/main",
-    "pages/goodslist/main"
+    "pages/goodslist/main",
+    "pages/goodsdetail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
