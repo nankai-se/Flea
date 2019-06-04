@@ -13,7 +13,7 @@
         </view>
       </van-panel>
     </div>
-    <van-button id="createloc" type="primary" @click="goEditLocation">新增地址</van-button>
+    <van-button id="createloc" type="primary" @click="goEditLocation('')">新增地址</van-button>
   </view>
 </template>
 
@@ -36,6 +36,7 @@ export default {
     this.getDefaultLoc()
   },
   onLoad () {
+    this.locLists = []
     this.getLocation(this.amount)
   },
   data () {
@@ -62,8 +63,6 @@ export default {
       const db = wx.cloud.database()
       db.collection('location')
         .orderBy('release_time', 'asc')
-        .skip(amount)
-        .limit(this.pageSize)
         .get()
         .then(res => {
           const def = this.defaultLocation

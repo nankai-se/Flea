@@ -8,6 +8,7 @@
         clearable
         label="姓名"
         placeholder="请输入收件人姓名"
+        @change="onName"
         bind:click-icon="onClickIcon"
       />
       <van-field
@@ -16,6 +17,7 @@
         clearable
         label="手机"
         placeholder="请输入收件人手机号"
+        @change="onPhone"
         bind:click-icon="onClickIcon"
       />
       <van-field
@@ -24,6 +26,7 @@
         clearable
         label="省"
         placeholder="请输入省"
+        @change="onProvince"
         bind:click-icon="onClickIcon"
       />
       <van-field
@@ -31,6 +34,7 @@
         label="市"
         clearable
         placeholder="请输入市"
+        @change="onCity"
         required
         border=false
       />
@@ -39,11 +43,13 @@
         label="区"
         clearable
         placeholder="请输入区"
+        @change="onDistrict"
         border=false
       />
       <van-field
         :value="specific"
         placeholder="请输入详细地址"
+        @change="onSpecific"
         border=false
         bind:change="onChange"
       />
@@ -75,7 +81,7 @@ export default {
     }
   },
   onLoad (opp) {
-    if (opp.addrId !== undefined) {
+    if (opp.addrId !== '') {
       console.log('opp:', opp.addrId)
       console.log('opp a:', opp.addrId !== undefined)
       this.addrId = opp.addrId
@@ -91,6 +97,78 @@ export default {
     clearCache () {
       this.amount = 0
       this.goodsLists = []
+    },
+    onName (e) {
+      // console.log('change target:', e.target)
+      let value = ''
+      for (let i = 0; ; i++) {
+        if (e.target[i]) {
+          value += e.target[i]
+        } else {
+          break
+        }
+      }
+      this.name = value
+    },
+    onPhone (e) {
+      // console.log('change target:', e.target)
+      let value = ''
+      for (let i = 0; ; i++) {
+        if (e.target[i]) {
+          value += e.target[i]
+        } else {
+          break
+        }
+      }
+      this.phone = value
+    },
+    onProvince (e) {
+      // console.log('change target:', e.target)
+      let value = ''
+      for (let i = 0; ; i++) {
+        if (e.target[i]) {
+          value += e.target[i]
+        } else {
+          break
+        }
+      }
+      this.province = value
+    },
+    onCity (e) {
+      // console.log('change target:', e.target)
+      let value = ''
+      for (let i = 0; ; i++) {
+        if (e.target[i]) {
+          value += e.target[i]
+        } else {
+          break
+        }
+      }
+      this.city = value
+    },
+    onDistrict (e) {
+      // console.log('change target:', e.target)
+      let value = ''
+      for (let i = 0; ; i++) {
+        if (e.target[i]) {
+          value += e.target[i]
+        } else {
+          break
+        }
+      }
+      this.district = value
+    },
+    onSpecific (e) {
+      // console.log('change target:', e.target)
+      let value = ''
+      for (let i = 0; ; i++) {
+        if (e.target[i]) {
+          value += e.target[i]
+        } else {
+          break
+        }
+      }
+      this.specific = value
     },
     editLocation () {
       const db = wx.cloud.database()
