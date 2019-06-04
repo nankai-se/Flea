@@ -13,7 +13,7 @@
         </view>
       </van-panel>
     </div>
-    <van-button id="createloc" type="primary" @click="goEditLocation()">新增地址</van-button>
+    <van-button id="createloc" type="primary" @click="goEditLocation">新增地址</van-button>
   </view>
 </template>
 
