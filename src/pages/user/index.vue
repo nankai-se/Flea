@@ -115,7 +115,7 @@ export default {
     },
     showWantedList () {
       wx.navigateTo({
-        url: '../list/main'
+        url: '../favoriteslist/main'
       })
     }
 
