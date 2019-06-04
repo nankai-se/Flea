@@ -1,12 +1,12 @@
 <template>
-  <div class="itemcard">
+  <div class="itemcard" @click="onClick">
     <view class="item-img-box">
       <img class="item-img" :src="img" mode="aspectFill"/>
     </view>
     <div class="item-tag">
       <span class="detail" v-text="detail"></span>
       <span class="price-tag">￥</span><span class="price" v-text="price"></span>
-      <span class="favorite" v-text="favorite">人收藏</span>
+      <span class="favorite" v-text="favorite">人收藝</span>
       <div class="split-line"></div>
       <span class="username" v-text="ownerName"></span>
       <span class="location" v-text="location"></span>
@@ -29,6 +29,13 @@ export default {
     return {
       ownerName: '',
       location: ''
+    }
+  },
+  methods: {
+    onClick () {
+      console.log('click on card:', this.id)
+      // this.goSearchResult()
+      this.$emit('emitGoodId', this.id)
     }
   },
   mounted () {
@@ -60,8 +67,6 @@ export default {
       .catch(err => {
         console.error(err)
       })
-  },
-  method: {
   }
 }
 </script>

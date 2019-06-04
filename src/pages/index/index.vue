@@ -34,7 +34,7 @@
       <view class="panel">
         <div class="noGoods-panel" v-if="!hasGoods" v-text="noGoods"></div>
         <div v-if="hasGoods">
-          <itempanel :goodsLists=goodsLists></itempanel>
+          <itempanel :goodsLists=goodsLists @goGoodsDetail="goGoodsDetail"></itempanel>
         </div>
         <div class="noMoreGoods-panel" v-if="isNoMore" v-text="noMoreGoods"></div>
       </view>
@@ -112,6 +112,13 @@ export default {
     this.getGoods(this.amount)
   },
   methods: {
+    goGoodsDetail (id) {
+      console.log('emit again:', id)
+      const url = `/pages/goodsdetail/main?goodId=${id}`
+      mpvue.navigateTo({
+        url
+      })
+    },
     goGoodsList (type) {
       const url = `/pages/goodslist/main?type=` + type
       console.log(url)
@@ -128,7 +135,7 @@ export default {
       console.log('before:', searchValue)
       // const searchValue = e
       const url = `/pages/searchresult/main?searchValue=${searchValue}`
-      mpvue.redirectTo({
+      mpvue.navigateTo({
         url
       })
     },
@@ -141,8 +148,11 @@ export default {
           if (res.data.length > 0) {
             for (let i = 0; i < res.data.length; i++) {
               this.goodsLists.push({
+                'id': res.data[i]['_id'],
                 'img': res.data[i]['headimg'],
-                'price': res.data[i]['price']
+                'price': res.data[i]['price'],
+                'detail': res.data[i]['detail'],
+                'favorite': res.data[i]['favorite']
               })
             }
             this.amount += res.data.length

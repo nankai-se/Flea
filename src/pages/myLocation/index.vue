@@ -1,23 +1,20 @@
 <template>
-  <div>
-    <div>
-      <view>
-        <div v-if="hasLocation">
-          <van-panel
-            v-for="location in locLists"
-            :key="location.id"
-            :title="location['name']"
-            :desc="location['phone']"
-            :status="location['status']">
-            <view class="content">
-              {{ location.address }}
-              <van-button size="small" hairline="true" class="foot-button" @click="goEditLocation(location.id)">编辑</van-button>
-            </view>
-          </van-panel>
-        </div>
-      </view>
+  <view>
+    <div v-if="hasLocation">
+      <van-panel
+        v-for="location in locLists"
+        :key="location.id"
+        :title="location['name']"
+        :desc="location['phone']"
+        :status="location['status']">
+        <view class="content">
+          {{ location.address }}
+          <van-button size="small" hairline="true" class="foot-button" @click="goEditLocation(location.id)">编辑</van-button>
+        </view>
+      </van-panel>
     </div>
-  </div>
+    <van-button id="createloc" type="primary" @click="goEditLocation('')">新增地址</van-button>
+  </view>
 </template>
 
 
@@ -39,6 +36,7 @@ export default {
     this.getDefaultLoc()
   },
   onLoad () {
+    this.locLists = []
     this.getLocation(this.amount)
   },
   data () {
@@ -53,15 +51,18 @@ export default {
     }
   },
   methods: {
-    goEditLocation (id) {
-      console.log('id:', id)
+    goEditLocation (addrId) {
+      console.log('id:', addrId)
+      // const searchValue = e
+      const url = `/pages/editlocation/main?addrId=${addrId}`
+      mpvue.navigateTo({
+        url
+      })
     },
     getLocation (amount) {
       const db = wx.cloud.database()
       db.collection('location')
         .orderBy('release_time', 'asc')
-        .skip(amount)
-        .limit(this.pageSize)
         .get()
         .then(res => {
           const def = this.defaultLocation
@@ -79,7 +80,8 @@ export default {
                   res.data[i]['city'] + ' ' +
                   res.data[i]['district'] + ' ' +
                   res.data[i]['specific'],
-                'status': status
+                'status': status,
+                'id': res.data[i]['_id']
               })
             }
             this.amount += res.data.length
@@ -116,9 +118,11 @@ export default {
   padding: 40rpx;
 }
 
+
 .log-item {
   margin: 10rpx;
 }
+
 .foot-button {
   float:right;
   margin-top:10px;
@@ -130,5 +134,9 @@ export default {
   margin-left: 15px;
   padding-bottom:10px; 
   padding-top:10px;
+}
+
+#createloc {
+  margin: 10px;
 }
 </style>
