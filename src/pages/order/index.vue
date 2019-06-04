@@ -17,10 +17,10 @@
                       :thumb="item.card.thumb"
                       :thumb-link ="link+item.panel.order_id"
                     >
-                      <view slot="footer" >
+                      <!-- <view slot="footer" >
                             <van-button size="small" round="true">评价订单</van-button>
                             <van-button size="small" round="true">删除订单</van-button>
-                      </view>
+                      </view> -->
                   </van-card>
                 </view>
               </van-panel>
@@ -44,10 +44,10 @@
                       :thumb="item.card.thumb"
                       :thumb-link ="link+item.panel.order_id"
                     >
-                      <view slot="footer" >
+                      <!-- <view slot="footer" >
                             <van-button size="small" round="true">评价订单</van-button>
                             <van-button size="small" round="true">删除订单</van-button>
-                      </view>
+                      </view> -->
                   </van-card>
                 </view>
               </van-panel>
@@ -71,10 +71,10 @@
                         :thumb="item.card.thumb"
                         :thumb-link ="link+item.panel.order_id"
                       >
-                        <view slot="footer" >
+                        <!-- <view slot="footer" >
                               <van-button size="small" round="true">评价订单</van-button>
                               <van-button size="small" round="true">删除订单</van-button>
-                        </view>
+                        </view> -->
                     </van-card>
                   </view>
                 </van-panel>
@@ -98,10 +98,10 @@
                         :thumb="item.card.thumb"
                         :thumb-link ="link+item.panel.order_id"
                       >
-                        <view slot="footer" >
+                        <!-- <view slot="footer" >
                               <van-button size="small" round="true">评价订单</van-button>
                               <van-button size="small" round="true">删除订单</van-button>
-                        </view>
+                        </view> -->
                     </van-card>
                   </view>
                 </van-panel>

@@ -62,13 +62,13 @@
     </div>
     <div class="bottom-popup">
       <van-cell title="我的地址" is-link url="../myLocation/main" link-type="navigateTo"/>
-      <van-cell title="隐私政策" is-link url="../myLocation/main" link-type="navigateTo"/>
+      <!-- <van-cell title="隐私政策" is-link url="../myLocation/main" link-type="navigateTo"/>
       <van-cell title="用户协议" is-link url="../myLocation/main" link-type="navigateTo"/>
-      <van-cell title="帮助中心" is-link url="../myLocation/main" link-type="navigateTo"/>
+      <van-cell title="帮助中心" is-link url="../myLocation/main" link-type="navigateTo"/> -->
     </div>
-    <div class="setting">
+    <!-- <div class="setting">
       <van-cell title="设置" is-link url="../myLocation/main" link-type="navigateTo"/>
-    </div>
+    </div> -->
   </div>
 </template>
 

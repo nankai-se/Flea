@@ -285,7 +285,7 @@ export default {
     },
     editGoods (goodsId) {
       wx.navigateTo({
-        url: '../object/main?goodsId=' + goodsId
+        url: '../goodsdetail/main?goodId=' + goodsId
       })
     },
     removeGoods (goodsId) {
