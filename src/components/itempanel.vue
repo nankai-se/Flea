@@ -20,7 +20,8 @@ import itemcard from './itemcard.vue'
 import store from '../pages/index/store'
 export default {
   props: {
-    searchValue: ['searchValue']
+    searchValue: ['searchValue'],
+    type: String
   },
   data () {
     return {
@@ -62,10 +63,12 @@ export default {
     },
     getGoods (amount) {
       const db = wx.cloud.database()
-      db.collection('goods').orderBy('release_time', 'asc').skip(amount).limit(this.pageSize)
+      db.collection('goods').where({
+        type: this.type
+      }).orderBy('release_time', 'asc').skip(amount).limit(this.pageSize)
         .get()
         .then(res => {
-          console.log('res: ', res)
+          console.log('goodsget: ', res)
           if (res.data.length > 0) {
             for (let i = 0; i < res.data.length; i++) {
               this.goodsLists.push({

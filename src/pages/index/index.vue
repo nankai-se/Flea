@@ -16,13 +16,13 @@
       <div class="theme-panel">
         <view class="theme-row">
           <view class="theme-box" v-for="(img,index) in theme_img_one" :key="img.id">
-            <img class="theme-img" :src="img"/>
+            <img class="theme-img" :src="img" @click="goGoodsList(theme_title_one[index])"/>
             <label class="theme-title">{{theme_title_one[index]}}</label>
           </view>
         </view>
         <view class="theme-row">
           <view class="theme-box" v-for="(img,index) in theme_img_two" :key="img.id">
-            <img class="theme-img" :src="img"/>
+            <img class="theme-img" :src="img" @click="goGoodsList(theme_title_two[index])"/>
             <label class="theme-title">{{theme_title_two[index]}}</label>
           </view>
         </view>
@@ -64,7 +64,7 @@ export default {
         '教辅',
         '服饰',
         '电器',
-        '食物'
+        '食品'
       ],
       theme_img_two: [
         'cloud://idwc.6964-idwc/static/images/makeup.png',
@@ -73,7 +73,7 @@ export default {
         'cloud://idwc.6964-idwc/static/images/see_more.png'
       ],
       theme_title_two: [
-        '彩妆',
+        '美妆',
         '交通',
         '数码',
         '更多'
@@ -112,6 +112,13 @@ export default {
     this.getGoods(this.amount)
   },
   methods: {
+    goGoodsList (type) {
+      const url = `/pages/goodslist/main?type=` + type
+      console.log(url)
+      mpvue.navigateTo({
+        url
+      })
+    },
     clearCache () {
       this.amount = 0
       this.goodsLists = []
