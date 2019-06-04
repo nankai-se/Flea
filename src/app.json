@@ -11,8 +11,9 @@
     "pages/favoriteslist/main",
     "pages/goodslist/main",
     "pages/editlocation/main",
-    "pages/orderDetail/main",
-    "pages/comfirmorder/main"
+    "pages/comfirmorder/main",
+    "pages/goodsdetail/main",
+    "pages/orderDetail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
