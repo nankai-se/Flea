@@ -6,7 +6,7 @@
           <van-tab title="全部">
             <div class="noGoods-panel" v-if="!hasOrder" v-text="noOrders"></div>
             <div v-if="hasOrder">
-            <view v-for="item in ordersList" :key="item">
+            <view v-for="item in orderList" :key="item">
               <van-panel :title="item.panel.title" :desc="item.panel.desc" :status="item.panel.status" use-footer-slot>
                 <view>
                   <van-card
@@ -21,19 +21,18 @@
                             <van-button size="small" round="true">删除订单</van-button>
                       </view>
                   </van-card>
-
                 </view>
               </van-panel>
             </view>
             </div>
-            <div class="noMoreOrders-panel" v-if="orderIsNoMore" v-text="noMoreOrders"></div>
+            <div class="noMoreOrders-panel" v-if="isNoMore" v-text="noMoreOrders"></div>
           </van-tab>
       
  
           <van-tab title="待付款">
-            <div class="noOrders-panel" v-if="!hasUnpaidOrder" v-text="noOrders"></div>
-            <div v-if="hasUnpaidOrder">
-            <view v-for="item in orderStatusUnpaid" :key="item">
+            <div class="noOrders-panel" v-if="!hasOrder" v-text="noOrders"></div>
+            <div v-if="hasOrder">
+            <view v-for="item in orderList" :key="item">
               <van-panel :title="item.panel.title" :desc="item.panel.desc" :status="item.panel.status" use-footer-slot>
                 <view>
                   <van-card
@@ -52,14 +51,14 @@
               </van-panel>
             </view>
             </div>
-            <div class="noMoreOrders-panel" v-if="unpaidIsNoMore" v-text="noMoreOrders"></div>
+            <div class="noMoreOrders-panel" v-if="isNoMore" v-text="noMoreOrders"></div>
           </van-tab>
 
 
           <van-tab title="待发货">
-            <div class="noOrders-panel" v-if="!hasUndeliveryOrder" v-text="noOrders"></div>
-            <div v-if="hasUndeliveryOrder">
-              <view v-for="item in orderStatusUndelivery" :key="item">
+            <div class="noOrders-panel" v-if="!hasOrder" v-text="noOrders"></div>
+            <div v-if="hasOrder">
+              <view v-for="item in orderList" :key="item">
                 <van-panel :title="item.panel.title" :desc="item.panel.desc" :status="item.panel.status" use-footer-slot>
                   <view>
                     <van-card
@@ -78,14 +77,14 @@
                 </van-panel>
               </view>
             </div>
-            <div class="noMoreOrders-panel" v-if="undeliveryIsNoMore" v-text="noMoreOrders"></div>
+            <div class="noMoreOrders-panel" v-if="isNoMore" v-text="noMoreOrders"></div>
           </van-tab>
 
 
           <van-tab title="待收货">
-            <div class="noOrders-panel" v-if="!hasUnreceivedOrder" v-text="noOrders"></div>
-            <div v-if="hasUnreceivedOrder">
-              <view v-for="item in orderStatusUnreceived" :key="item">
+            <div class="noOrders-panel" v-if="!hasOrder" v-text="noOrders"></div>
+            <div v-if="hasOrder">
+              <view v-for="item in orderList" :key="item">
                 <van-panel :title="item.panel.title" :desc="item.panel.desc" :status="item.panel.status" use-footer-slot>
                   <view>
                     <van-card
@@ -104,7 +103,7 @@
                 </van-panel>
               </view>
             </div>
-            <div class="noMoreOrders-panel" v-if="unreceivedIsNoMore" v-text="noMoreOrders"></div>
+            <div class="noMoreOrders-panel" v-if="isNoMore" v-text="noMoreOrders"></div>
           </van-tab>
         </van-tabs>
       </div>
@@ -125,7 +124,6 @@ export default {
       noOrders: '暂时没有订单，过会再来吧~',
       noMoreOrders: '没有更多订单啦~',
       active: 0,
-      userId: '',
       pageSize: 10,
       ordersList: [
         {
@@ -188,33 +186,9 @@ export default {
       orderList: [
 
       ],
-      unpaidOrderList: [
-
-      ],
-      undeliveryOrderList: [
-
-      ],
-      unreceivedOrderList: [
-
-      ],
-      order: {
-        all: this.orderList,
-        unpaid: this.unpaidOrderList,
-        undelivery: this.undeliveryOrderList,
-        unreceived: this.unreceivedOrderList
-      },
-      orderAmount: 0,
-      unpaidAmount: 0,
-      undeliveryAmount: 0,
-      unreceivedAmount: 0,
       hasOrder: false,
-      hasUnpaidOrder: false,
-      hasUndeliveryOrder: false,
-      hasUnreceivedOrder: false,
-      orderIsNomore: false,
-      unpaidIsNoMore: false,
-      undeliveryIsNoMore: false,
-      unreceivedIsNoMore: false
+      isNoMore: false,
+      amount: 0
     }
   },
   computed: {
@@ -242,37 +216,41 @@ export default {
   created () {
 
   },
+  onUnload () {
+    // this.clearCache()
+  },
   onLoad (options) {
     this.active = options.active
-    switch (this.active) {
+    let temp = this.active
+    switch (parseInt(temp)) {
       case 0:
-        this.getMyOrders(this.orderAmount, 'all', this.hasOrder, this.orderIsNomore)
+        this.getMyOrders()
         break
       case 1:
-        this.getOrders(this.unpaidAmount, 'unpaid', this.hasUnpaidOrder, this.unpaidIsNoMore)
+        this.getOrders('待付款')
         break
       case 2:
-        this.getOrders(this.undeliveryAmount, 'undelivery', this.hasUndeliveryOrder, this.undeliveryIsNoMore)
+        this.getOrders('待发货')
         break
       case 3:
-        this.getOrdes(this.unreceivedAmount, 'unreceived', this.hasUnreceivedOrder, this.unreceivedIsNoMore)
+        this.getOrders('待收货')
         break
     }
   },
 
   onReachBottom () {
-    switch (this.active) {
+    switch (parseInt(this.active)) {
       case 0:
-        this.getMyOrders(this.orderAmount, 'all', this.hasOrder, this.orderIsNomore)
+        this.getMyOrders()
         break
       case 1:
-        this.getOrders(this.unpaidAmount, 'unpaid', this.hasUnpaidOrder, this.unpaidIsNoMore)
+        this.getOrders('待付款')
         break
       case 2:
-        this.getOrders(this.undeliveryAmount, 'undelivery', this.hasUndeliveryOrder, this.undeliveryIsNoMore)
+        this.getOrders('待发货')
         break
       case 3:
-        this.getOrdes(this.unreceivedAmount, 'unreceived', this.hasUnreceivedOrder, this.unreceivedIsNoMore)
+        this.getOrders('待收货')
         break
     }
   },
@@ -280,24 +258,35 @@ export default {
   methods: {
     /**
      * @function
+     * 清除页面加载的数据
+     */
+    clearCache () {
+      this.orderList = []
+      this.hasOrder = false
+      this.isNoMore = false
+      this.amount = 0
+    },
+    /**
+     * @function
      * 每次变化时要请求数据？
      * 或者打开这个页面的时候请求一次
      * 不同的tab使用filter从orderlist中选取
      */
-    onChange (e) {
-      let index = e.detail.index
+    onChange (event) {
+      let index = event.target.index
+      this.clearCache()
       switch (index) {
         case 0:
-          this.getMyOrders(this.orderAmount, 'all', this.hasOrder, this.orderIsNomore)
+          this.getMyOrders()
           break
         case 1:
-          this.getOrders(this.unpaidAmount, 'unpaid', this.hasUnpaidOrder, this.unpaidIsNoMore)
+          this.getOrders('待付款')
           break
         case 2:
-          this.getOrders(this.undeliveryAmount, 'undelivery', this.hasUndeliveryOrder, this.undeliveryIsNoMore)
+          this.getOrders('待发货')
           break
         case 3:
-          this.getOrdes(this.unreceivedAmount, 'unreceived', this.hasUnreceivedOrder, this.unreceivedIsNoMore)
+          this.getOrders('待收货')
           break
       }
     },
@@ -305,7 +294,8 @@ export default {
      * @function
      * 获得所有订单
      */
-    getMyOrders (amount, type, hasOrder, isNoMore) {
+    getMyOrders () {
+      let that = this
       const userId = store.state.userId
       const db = wx.cloud.database()
       db.collection('order').where({
@@ -316,21 +306,14 @@ export default {
         .then(
           res => {
             if (res.data.length > 0) {
-              hasOrder = true
-              for (let i = 0; i < res.data.length; i++) {
-                this.order[type].panel.push({
-                  'status': res.data[i]['order_state'],
-                  'order_id': res.data[i]['_id']
-                })
-              }
-              this.getGoods(res.data, isNoMore, amount, type)
-              this.getSellerInfo(res.data, isNoMore, amount, type)
+              that.hasOrder = true
+              this.getGoods(res.data)
             }
           }
         )
     },
-
-    getOrders (amount, type, hasOrder, isNoMore) {
+    getOrders (type) {
+      let that = this
       const userId = store.state.userId
       const db = wx.cloud.database()
       db.collection('order').where({
@@ -342,58 +325,55 @@ export default {
         .then(
           res => {
             if (res.data.length > 0) {
-              hasOrder = true
-              for (let i = 0; i < res.data.length; i++) {
-                this.order[type].panel.push({
-                  'status': res.data[i]['order_state'],
-                  'order_id': res.data[i]['_id']
-                })
-              }
-              this.getGoods(res.data, isNoMore, amount, type)
-              this.getSellerInfo(res.data, isNoMore, amount, type)
+              that.hasOrder = true
+              this.getGoods(res.data)
             }
           }
         )
     },
-    getGoods (goodIds, isNoMore, amount, type) {
+    getGoods (data) {
       const db = wx.cloud.database()
-      console.log('goodsid:', goodIds)
-      if (goodIds.length > 0) {
-        for (let i = 0; i < goodIds.length; i++) {
+      if (data.length > 0) {
+        for (let i = 0; i < data.length; i++) {
           db.collection('goods').where({
-            _id: goodIds[i]['goods_id']
+            _id: data[i]['goods_id']
           }).get().then(res => {
-            console.log('goods:', res)
-            console.log('type:', typeof this.goodsLists)
-            this.order[type].card.push({
-              'desc': res.data[i]['detail'],
-              'title': res.data[i]['type'],
-              'thumb': res.data[i]['imgs'][0],
-              'price': res.data[0]['price'],
-              'num': 1
+            this.orderList.push({
+              'card': {
+                'desc': res.data[0]['detail'],
+                'title': res.data[0]['type'],
+                'thumb': res.data[0]['imgs'][0],
+                'price': res.data[0]['price'],
+                'num': 1
+              },
+              'panel': {
+
+              }
             })
-            amount++
+            this.amount++
+            this.getSellerInfo(data, i)
           })
         }
       } else {
-        isNoMore = true
+        this.isNoMore = true
       }
     },
-    getSellerInfo (sellerIds, isNoMore, amount, type) {
+    getSellerInfo (data, i) {
+      console.log('entry get sellerINfo')
       const db = wx.cloud.database()
-      if (sellerIds.length > 0) {
-        for (let i = 0; i < sellerIds.length; i++) {
-          db.collection('user').where({
-            _id: sellerIds[i]['seller_id']
-          }).get().then(res => {
-            this.order[type].panel.push({
-              'title': res.data[i]['nickName'],
-              'desc': '暂无'
-            })
-          })
-        }
+      if (data.length > 0) {
+        db.collection('user').where({
+          _id: data[i]['seller_id']
+        }).get().then(res => {
+          this.orderList[i]['panel'] = {
+            'title': res.data[0]['nickName'],
+            'desc': '暂无',
+            'status': data[i]['order_state'],
+            'order_id': data[i]['_id']
+          }
+        })
       } else {
-        isNoMore = true
+        this.isNoMore = true
       }
     }
   }

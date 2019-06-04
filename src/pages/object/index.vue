@@ -6,7 +6,7 @@
           <van-tab title="全部">
             <div class="noGoods-panel" v-if="!hasAllGoods" v-text="noGoods"></div>
             <div v-if="hasAllGoods">
-            <view v-for="item in goodList" :key="item">
+            <view v-for="item in goodsList" :key="item">
               <view>
                 <van-card
                     :num="item.num"
@@ -31,7 +31,7 @@
           <van-tab title="待售">
             <div class="noGoods-panel" v-if="!hasUnsellGoods" v-text="noGoods"></div>
             <div v-if="hasUnsellGoods">
-            <view v-for="item in goodsStatusUnsell" :key="item">
+            <view v-for="item in unSellList" :key="item">
               <view>
                 <van-card
                     :num="item.num"
@@ -56,7 +56,7 @@
           <van-tab title="我卖出的">
             <div class="noGoods-panel" v-if="!hasSoldGoods" v-text="noGoods"></div>
             <div v-if="hasSoldGoods">
-            <view v-for="item in goodsStatusSold" :key="item">
+            <view v-for="item in soldList" :key="item">
               <view>
                 <van-card
                     :num="item.num"
@@ -81,7 +81,7 @@
           <van-tab title="下架商品">
             <div class="noGoods-panel" v-if="!hasRemovedGoods" v-text="noGoods"></div>
             <div v-if="hasRemovedGoods">
-              <view v-for="item in goodsStatusRemoved" :key="item">
+              <view v-for="item in removedList" :key="item">
                 <view>
                   <van-card
                       :num="item.num"
@@ -167,8 +167,10 @@ export default {
       unSellIsNomore: false,
       soldIsNomore: false,
       removedIsNoMore: false,
-      owner_id: '',
-      active: 0
+      owner_id: '1',
+      active: 0,
+      noGoods: '暂时没有商品，过会再来吧~',
+      noMoreGoods: '没有更多商品啦~'
     }
   },
   computed: {
@@ -192,7 +194,7 @@ export default {
 
   },
   onReachBottom () {
-    switch (this.active) {
+    switch (parseInt(this.active)) {
       case 0:
         this.getMyGoods()
         break
@@ -208,10 +210,15 @@ export default {
     }
   },
   onLoad (options) {
+    console.log('entry into onLoad')
     this.active = options.active
-    switch (this.active) {
+    let temp = this.active
+    console.log('active: ', this.active)
+    switch (parseInt(temp)) {
       case 0:
+        console.log('entry into switch')
         this.getMyGoods()
+        console.log('我的商品', this.goodsList)
         break
       case 1:
         this.getMyUnsellGoods()
@@ -256,9 +263,11 @@ export default {
      * 或者打开这个页面的时候请求一次
      * 不同的tab使用filter从orderlist中选取
      */
-    onChange (e) {
-      let index = e.detail.index
-      switch (index) {
+    onChange (event) {
+      console.log('event: ', event)
+      let index = event.target.index
+      console.log('type: ', typeof index)
+      switch (parseInt(index)) {
         case 0:
           this.getMyGoods()
           break
@@ -279,6 +288,7 @@ export default {
      * 获取我的所有类型商品的列表
      */
     getMyGoods () {
+      console.log('what happen')
       const db = wx.cloud.database()
       db.collection('goods').where({
         owner_id: this.owner_id
@@ -301,6 +311,7 @@ export default {
                   }
                 )
               }
+              this.allAmount += res.data.length
             } else {
               this.allIsNoMore = true
             }
@@ -338,6 +349,7 @@ export default {
                   }
                 )
               }
+              this.unSellAmount += res.data.length
             } else {
               this.unSellIsNoMore = true
             }
@@ -373,6 +385,7 @@ export default {
                   }
                 )
               }
+              this.soldAmount += res.data.length
             } else {
               this.soldIsNoMore = true
             }
@@ -408,6 +421,7 @@ export default {
                   }
                 )
               }
+              this.removedAmount += res.data.length
             } else {
               this.removedIsNoMore = true
             }
@@ -440,7 +454,6 @@ export default {
   color: rgb(177, 177, 177);
   background-color: rgb(249, 250, 250);
   height: 50px;
-  margin-top: 20px;
   font-size: 15px;
 }
 </style>
