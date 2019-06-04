@@ -4,7 +4,7 @@
       <search></search>
     </div>
     <div class="itempanel" @click="handle">
-      <itempanel></itempanel>
+      <itempanel :type="type"></itempanel>
     </div>
   </div>
 </template>
@@ -22,12 +22,17 @@ export default {
   },
   data () {
     return {
+      type: ''
     }
+  },
+  onLoad: function (options) {
+    console.log(options.type)
+    this.type = options.type
   },
   methods: {
     handle () {
       const url = `/pages/goodsdetail/main?goodId=` + store.state.curGoodId
-      console.log(url)
+      // console.log(url)
       mpvue.navigateTo({
         url
       })
