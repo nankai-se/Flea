@@ -1,18 +1,18 @@
 <template>
-  <div @click="handle">
+  <div>
     <div class="outer-split-line"></div>
-    <div class="detail">
+    <div class="detail" @click="handle">
       <div class="userinfo">
         <van-row>
           <van-col span="3">
             <view class="portrait-box">
-              <img class="portrait" src="cloud://idwc.6964-idwc/static/images/cat.jpg"/>
+              <img class="portrait" :src="portrait"/>
             </view>
           </van-col>
           <van-col span="10">
             <table>
               <tr>
-                <td><span class="username">username</span></td>
+                <td><span class="username" v-text="ownerName"></span></td>
                 <td><span class="location">八里台</span></td>
               </tr>
             </table>
@@ -23,12 +23,13 @@
       <div class="split-line"></div>
 
       <div class="goodsinfo">
+        <span class="price-tag">￥</span><span class="price" v-text="price"></span><br>
         <van-tag v-if="hasTag" type="danger">全新</van-tag>
-        <span class="goodsdetail" v-text="good['detail']"></span>
+        <span class="goodsdetail" v-text="detail"></span>
 
         <view class="swiper-view">
           <swiper class="swiper" indicator-dots="true" circular>
-            <block v-for="img in good['img']" v-bind:key="img.id">
+            <block v-for="img in imgs" v-bind:key="img.id">
               <swiper-item>
                   <img mode="aspectFit" :src="img"/>
               </swiper-item>
@@ -41,28 +42,23 @@
     </div>
     <div class="outer-split-line"></div>
     
-    <div class="comment-box">
+    <div class="comment-box" @click="handle">
       <div class="outer-split-line"></div>
       <span class="comment">留言</span>
       <div class="outer-split-line"></div>
 
       <div class="comment">
         <div v-for="comment in commentList" :key="comment">
-            <van-cell title="username" value="2018" :label="comment" border=false />
+            <van-cell :title="comment['username']" :value="comment['date']" :label="comment['content']" border=false />
         </div>
-        <van-cell-group>
-          <van-field
-            :focus="keyboard"
-            cursor-spacing=10
-            center
-            clearable
-            placeholder="有什么想问问宝贝主人？"
-            border=false
-            use-button-slot
-          >
-            <van-button slot="button" size="small" type="warning">留言</van-button>
-          </van-field>
-        </van-cell-group>
+        <div v-if="keyboard">
+          <input
+          :focus="keyboard"
+          type="text"
+          v-model="myComment"
+          cursor-spacing=0
+          placeholder="有什么想问问宝贝主人？"/>
+        </div>
       </div>
       <div class="outer-split-line"></div>
     </div>
@@ -74,9 +70,9 @@
         @click="clickComment"
         />
         <van-goods-action-icon
-        icon="star-o"
+        :icon="star"
         text="收藏"
-        @click="onClickIcon"
+        @click="clickStar"
         />
         <van-goods-action-button
         text="聊一聊"
@@ -94,6 +90,7 @@
 
 <script>
 import itemdetail from '../../components/itemdetail.vue'
+import store from '../index/store'
 
 export default {
   name: 'goodsdetail',
@@ -102,36 +99,72 @@ export default {
   },
   data () {
     return {
-      advertises: [
-        'cloud://idwc.6964-idwc/static/goods_images/cookies.jpg',
-        'cloud://idwc.6964-idwc/static/goods_images/english.jpg',
-        'cloud://idwc.6964-idwc/static/images/cat.jpg'
-      ],
-      hasTag: true,
-      detail: '一只猫猫wwwwwwwdmkqdmkqmkqmqkmkqdmqldmlqdqld lqdlqd',
-      isComment: true,
-      good: {},
-      commentList: ['1111', '22222', '3333'],
-      keyboard: false
+      ownerName: 'null',
+      portrait: '',
+      goodId: '',
+      hasTag: false,
+      detail: '暂无商品信息哦~',
+      imgs: [],
+      price: 0,
+      commentList: [],
+      myComment: '',
+      keyboard: false,
+      star: 'star-o',
+      isStar: false
     }
   },
   onLoad: function (options) {
     console.log(options.goodId)
+    this.goodId = '0d3b0eeb-0750-4f6f-904f-3f023c91c26a'
     wx.cloud.init({
       env: 'idwc',
       traceUser: true
     })
     let goodId = '0d3b0eeb-0750-4f6f-904f-3f023c91c26a'
     this.getGood(goodId)
-    // this.getComment(goodId)
+    this.getComment(goodId)
+    this.getStar()
   },
   mounted () {
     console.log('detail page mounted!')
-    // let goodId = '0d3b0eeb-0750-4f6f-904f-3f023c91c26a'
-    // this.getGood(goodId)
   },
   methods: {
+    changeComment (value) {
+      console.log(value)
+    },
     getComment (goodId) {
+      const db = wx.cloud.database()
+      // 查询该商品的所有留言
+      db.collection('comment').where({
+        goods_id: goodId
+      }).orderBy('time', 'asc').get()
+        .then(resC => {
+          // console.log('comment: ', resC)
+          if (resC.data.length > 0) {
+            for (let i = 0; i < resC.data.length; i++) {
+              let id = resC.data[i]['sender_id']
+              // 查询该条留言的用户名
+              db.collection('user').where({
+                _id: id
+              }).get()
+                .then(resU => {
+                  if (resU.data.length > 0) {
+                    this.commentList.push({
+                      'content': resC.data[i]['content'],
+                      'date': resC.data[i]['time'].toLocaleString(),
+                      'username': resU.data[0]['nickName']
+                    })
+                  }
+                })
+                .catch(err => {
+                  console.error(err)
+                })
+            }
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
     },
     getGood (goodId) {
       const db = wx.cloud.database()
@@ -139,37 +172,136 @@ export default {
         _id: goodId
       }).get()
         .then(res => {
-          console.log('res: ', res)
+          // console.log('good: ', res)
           if (res.data.length > 0) {
-            for (let i = 0; i < res.data.length; i++) {
-              this.good['img'] = res.data[i]['fileID']
-              this.good['price'] = res.data[i]['price']
-              this.good['detail'] = res.data[i]['detail']
+            this.price = res.data[0]['price']
+            this.detail = res.data[0]['detail']
+            this.imgs.push(res.data[0]['fileID'])
+            let id = res.data[0]['owner_id']
+            db.collection('user').where({
+              _id: id
+            }).get()
+              .then(resU => {
+                if (resU.data.length > 0) {
+                  this.ownerName = resU.data[0]['nickName']
+                  this.portrait = resU.data[0]['portrait']
+                }
+              })
+              .catch(err => {
+                console.error(err)
+              })
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
+    getStar () {
+      const db = wx.cloud.database()
+      db.collection('favorites').where({
+        user_id: store.state.userId
+      }).get()
+        .then(res => {
+          // console.log('favorites: ', res)
+          if (res.data.length > 0) {
+            let goodsId = res.data[0]['goods_id']
+            let index = goodsId.indexOf(this.goodId)
+            console.log('get index: ', index)
+            if (index === -1) {
+              this.isStar = false
+              this.star = 'star-o'
+            } else {
+              this.isStar = true
+              this.star = 'star'
             }
           }
-          console.log(this.good['detail'])
         })
         .catch(err => {
           console.error(err)
         })
     },
     handle () {
-      console.log('detail')
-    },
-    onClickLeft () {
-      wx.showToast({title: '点击返回', icon: 'none'})
+      this.keyboard = false
     },
     clickComment () {
+      console.log(this.myComment)
       this.keyboard = true
+      // const db = wx.cloud.database()
+      // db.collection('comment').add({
+      //   // data 字段表示需新增的 JSON 数据
+      //   data: {
+      //     content: this.myComment,
+      //     goods_id: '0d3b0eeb-0750-4f6f-904f-3f023c91c26a',
+      //     sender_id: store.state.userId,
+      //     time: new Date()
+      //   },
+      //   success (res) {
+      //     // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
+      //     console.log(res)
+      //   }
+      // })
     },
     onClickButton () {
       wx.showToast({title: '点返回', icon: 'none'})
+    },
+    clickStar () {
+      this.isStar = !this.isStar
+      if (this.isStar) {
+        this.star = 'star'
+        wx.showToast({
+          icon: 'none',
+          title: '收藏成功~'
+        })
+      } else {
+        this.star = 'star-o'
+        wx.showToast({
+          icon: 'none',
+          title: '取消收藏~'
+        })
+      }
+      const db = wx.cloud.database()
+      db.collection('favorites').where({
+        user_id: store.state.userId
+      }).get()
+        .then(res => {
+          console.log('favorites: ', res)
+          if (res.data.length > 0) {
+            let goodsId = res.data[0]['goods_id']
+            let favoId = res.data[0]['_id']
+            let index = goodsId.indexOf(this.goodId)
+            console.log('index: ', index)
+            if (index === -1) {
+              console.log('push')
+              goodsId.push(this.goodId)
+            } else {
+              console.log('remove')
+              goodsId.splice(index, 1)
+            }
+            console.log(goodsId)
+            db.collection('favorites').doc(favoId).update({
+              data: {
+                goods_id: goodsId
+              }
+            }).then(res => {
+              console.log(res)
+            })
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
     }
   }
 }
 </script>
 
 <style scoped>
+input {
+  margin: 2%;
+  padding-left: 2%;
+  font-size: 20px;
+}
+
 .detail {
   padding: 5px;
   font-size: 14px;
@@ -208,6 +340,17 @@ export default {
   color: rgb(158, 158, 158);
 }
 
+.price-tag {
+  font-size: 12px;
+  color: rgb(241, 67, 36);
+}
+
+.price {
+  font-size: 14px;
+  font-weight: bold;
+  color: rgb(241, 67, 36);
+}
+
 .outer-split-line {
   height: 1px;
   width: 100%;
@@ -243,6 +386,7 @@ export default {
   height: 100%;
   box-sizing: border-box;
   z-index: 0;
+  padding-top: 2%;
 }
 
 swiper-item image {
