@@ -39,7 +39,7 @@ export default {
       //   }
       // })
       const url = `/pages/goodsdetail/main?goodsId=10`
-      mpvue.redirectTo({
+      mpvue.navigateTo({
         url
       })
     }

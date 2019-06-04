@@ -24,7 +24,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .itemcard {
   display: inline-block;
   width: calc(50% - 20px);
