@@ -15,6 +15,7 @@
                       :desc="item.card.desc"
                       :title="item.card.title"
                       :thumb="item.card.thumb"
+                      :thumb-link ="link+item.panel.order_id"
                     >
                       <view slot="footer" >
                             <van-button size="small" round="true">评价订单</van-button>
@@ -41,6 +42,7 @@
                       :desc="item.card.desc"
                       :title="item.card.title"
                       :thumb="item.card.thumb"
+                      :thumb-link ="link+item.panel.order_id"
                     >
                       <view slot="footer" >
                             <van-button size="small" round="true">评价订单</van-button>
@@ -67,6 +69,7 @@
                         :desc="item.card.desc"
                         :title="item.card.title"
                         :thumb="item.card.thumb"
+                        :thumb-link ="link+item.panel.order_id"
                       >
                         <view slot="footer" >
                               <van-button size="small" round="true">评价订单</van-button>
@@ -93,6 +96,7 @@
                         :desc="item.card.desc"
                         :title="item.card.title"
                         :thumb="item.card.thumb"
+                        :thumb-link ="link+item.panel.order_id"
                       >
                         <view slot="footer" >
                               <van-button size="small" round="true">评价订单</van-button>
@@ -121,6 +125,7 @@ export default {
 
   data () {
     return {
+      link: '../orderDetail/main?orderId=',
       noOrders: '暂时没有订单，过会再来吧~',
       noMoreOrders: '没有更多订单啦~',
       active: 0,
