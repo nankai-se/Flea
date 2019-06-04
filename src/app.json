@@ -10,7 +10,8 @@
     "pages/object/main",
     "pages/favoriteslist/main",
     "pages/goodslist/main",
-    "pages/editlocation/main"
+    "pages/editlocation/main",
+    "pages/orderDetail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
