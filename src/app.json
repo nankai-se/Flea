@@ -10,6 +10,7 @@
     "pages/object/main",
     "pages/list/main",
     "pages/goodslist/main",
+    "pages/goodsdetail/main",
     "pages/orderDetail/main"
   ],
   "window": {

@@ -134,7 +134,7 @@ export default {
           if (res.data.length > 0) {
             for (let i = 0; i < res.data.length; i++) {
               this.goodsLists.push({
-                'img': res.data[i]['fileID'],
+                'img': res.data[i]['headimg'],
                 'price': res.data[i]['price']
               })
             }
