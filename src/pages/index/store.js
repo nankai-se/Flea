@@ -10,7 +10,8 @@ const store = new Vuex.Store({
     userInfo: {'username': '',
       'headPortrait': '' },
     msgNum: 0,
-    msgInfo: []
+    msgInfo: [],
+    curGoodId: ''
   },
   mutations: {
     setuserId (state, userId) {
@@ -24,6 +25,9 @@ const store = new Vuex.Store({
     },
     setUserPortrait (state, headPortrait) {
       state.userInfo['headPortrait'] = headPortrait
+    },
+    setCurGoodId (state, goodId) {
+      state.curGoodId = goodId
     }
   }
 })
