@@ -11,7 +11,8 @@
     "pages/favoriteslist/main",
     "pages/goodslist/main",
     "pages/editlocation/main",
-    "pages/orderDetail/main"
+    "pages/orderDetail/main",
+    "pages/comfirmorder/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -42,7 +43,7 @@
       "selectedIconPath": "static/tabs/add.png"
     }, {
       "text": "消息",
-      "pagePath": "pages/editlocation/main",
+      "pagePath": "pages/comfirmorder/main",
       "iconPath": "static/tabs/message.png",
       "selectedIconPath": "static/tabs/message-active.png"
     }, {
