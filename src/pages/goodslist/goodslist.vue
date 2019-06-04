@@ -1,10 +1,10 @@
 <template>
-  <div @click="handle">
+  <div>
     <div class="search">
       <search></search>
     </div>
-    <div class="itempanel">
-      <itempanel></itempanel>
+    <div class="itempanel" @click="handle">
+      <itempanel :type="type"></itempanel>
     </div>
   </div>
 </template>
@@ -12,6 +12,7 @@
 <script>
 import itempanel from '../../components/itempanel.vue'
 import search from '../../components/search.vue'
+import store from '../index/store'
 
 export default {
   name: 'goodslist',
@@ -21,12 +22,20 @@ export default {
   },
   data () {
     return {
-      imageURL: '//img.yzcdn.cn/upload_files/2017/07/02/af5b9f44deaeb68000d7e4a711160c53.jpg'
+      type: ''
     }
+  },
+  onLoad: function (options) {
+    console.log(options.type)
+    this.type = options.type
   },
   methods: {
     handle () {
-      console.log('ddd')
+      const url = `/pages/goodsdetail/main?goodId=` + store.state.curGoodId
+      // console.log(url)
+      mpvue.navigateTo({
+        url
+      })
     }
   }
 }

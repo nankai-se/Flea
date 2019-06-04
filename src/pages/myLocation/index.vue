@@ -2,16 +2,19 @@
   <div>
     <div>
       <view>
-        <van-panel title="跳蚤街" desc="12345678910" status="默认">
-          <view class="content">天津 天津 滨海新区 第三大街泰达学院丰巢快递柜
-            <van-button size="small" hairline="true" class="foot-button">编辑</van-button>
-          </view>
-        </van-panel>
-        <van-panel title="南开大学" desc="12345678910" >
-          <view class="content">天津 天津 滨海新区 第三大街泰达学院丰巢快递柜
-            <van-button size="small" hairline="true" class="foot-button">编辑</van-button>
-          </view>
-        </van-panel>
+        <div v-if="hasLocation">
+          <van-panel
+            v-for="location in locLists"
+            :key="location.id"
+            :title="location['name']"
+            :desc="location['phone']"
+            :status="location['status']">
+            <view class="content">
+              {{ location.address }}
+              <van-button size="small" hairline="true" class="foot-button" @click="goEditLocation(location.id)">编辑</van-button>
+            </view>
+          </van-panel>
+        </div>
       </view>
     </div>
   </div>
@@ -22,31 +25,86 @@
 // 地址可以使用Panel
 // import { formatTime } from '@/utils/index'
 import card from '@/components/card'
+import store from '../index/store'
 
 export default {
   components: {
     card
   },
-
+  created () {
+    wx.cloud.init({
+      env: 'idwc',
+      traceUser: true
+    })
+    this.getDefaultLoc()
+  },
+  onLoad () {
+    this.getLocation(this.amount)
+  },
   data () {
     return {
-      logs: [],
-      imgUrls: [
-        'http://mss.sankuai.com/v1/mss_51a7233366a4427fa6132a6ce72dbe54/newsPicture/05558951-de60-49fb-b674-dd906c8897a6',
-        'http://mss.sankuai.com/v1/mss_51a7233366a4427fa6132a6ce72dbe54/coursePicture/0fbcfdf7-0040-4692-8f84-78bb21f3395d',
-        'http://mss.sankuai.com/v1/mss_51a7233366a4427fa6132a6ce72dbe54/management-school-picture/7683b32e-4e44-4b2f-9c03-c21f34320870'
-      ]
+      address: '',
+      locstatus: '',
+      locLists: [],
+      hasLocation: false,
+      amount: 0,
+      pageSize: 12,
+      defaultLocation: ''
     }
   },
-
-  created () {
-    // let logs
-    // if (mpvuePlatform === 'my') {
-    //   logs = mpvue.getStorageSync({key: 'logs'}).data || []
-    // } else {
-    //   logs = mpvue.getStorageSync('logs') || []
-    // }
-    // this.logs = logs.map(log => formatTime(new Date(log)))
+  methods: {
+    goEditLocation (id) {
+      console.log('id:', id)
+    },
+    getLocation (amount) {
+      const db = wx.cloud.database()
+      db.collection('location')
+        .orderBy('release_time', 'asc')
+        .skip(amount)
+        .limit(this.pageSize)
+        .get()
+        .then(res => {
+          const def = this.defaultLocation
+          console.log('res: ', res)
+          if (res.data.length > 0) {
+            for (let i = 0; i < res.data.length; i++) {
+              let status = ''
+              if (res.data[i]['_id'] === def) {
+                status = '默认'
+              }
+              this.locLists.push({
+                'name': res.data[i]['receiverName'],
+                'phone': res.data[i]['receiverPhone'],
+                'address': res.data[i]['province'] + ' ' +
+                  res.data[i]['city'] + ' ' +
+                  res.data[i]['district'] + ' ' +
+                  res.data[i]['specific'],
+                'status': status
+              })
+            }
+            this.amount += res.data.length
+            console.log('index loc list:', this.locLists)
+          }
+          this.hasLocation = this.amount > 0
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
+    getDefaultLoc () {
+      const db = wx.cloud.database()
+      const userId = store.state.userId
+      console.log('userId:', userId)
+      db.collection('user').where({
+        _id: userId
+      }).get()
+        .then(res => {
+          if (res.data[0].defaultLocation) {
+            this.defaultLocation = res.data[0].defaultLocation
+            console.log('def loc:', this.defaultLocation)
+          }
+        })
+    }
   }
 }
 </script>

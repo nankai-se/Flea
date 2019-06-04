@@ -8,8 +8,11 @@
     "pages/user/main",
     "pages/order/main",
     "pages/object/main",
-    "pages/list/main",
+    "pages/favoriteslist/main",
     "pages/goodslist/main",
+    "pages/editlocation/main",
+    "pages/comfirmorder/main",
+    "pages/goodsdetail/main",
     "pages/orderDetail/main"
   ],
   "window": {
@@ -41,7 +44,7 @@
       "selectedIconPath": "static/tabs/add.png"
     }, {
       "text": "消息",
-      "pagePath": "pages/list/main",
+      "pagePath": "pages/comfirmorder/main",
       "iconPath": "static/tabs/message.png",
       "selectedIconPath": "static/tabs/message-active.png"
     }, {

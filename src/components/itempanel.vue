@@ -1,8 +1,15 @@
 <template>
   <view class="panel">
     <div class="noGoods-panel" v-if="!hasGoods" v-text="noGoods"></div>
-    <div v-if="hasGoods">
-      <itemcard v-for="goods in goodsLists" :key="goods.id" :img="goods['img']" :price="goods['price']" :detail="goods['detail']"></itemcard>
+    <div v-if="hasGoods" @click="handle">
+      <itemcard
+        v-for="goods in goodsLists"
+        :key="goods.id"
+        :img="goods['img']"
+        :price="goods['price']"
+        :detail="goods['detail']"
+        :id="goods['id']"
+        :favorite="goods['favorite']"></itemcard>
     </div>
     <div class="noMoreGoods-panel" v-if="isNoMore" v-text="noMoreGoods"></div>
   </view>
@@ -10,9 +17,11 @@
 
 <script>
 import itemcard from './itemcard.vue'
+import store from '../pages/index/store'
 export default {
   props: {
-    searchValue: ['searchValue']
+    searchValue: ['searchValue'],
+    type: String
   },
   data () {
     return {
@@ -21,6 +30,7 @@ export default {
       noMoreGoods: '没有更多商品啦~',
       amount: 0,
       goodsLists: [],
+      favoriteLists: [],
       isNoMore: false,
       pageSize: 12
     }
@@ -53,16 +63,20 @@ export default {
     },
     getGoods (amount) {
       const db = wx.cloud.database()
-      db.collection('goods').orderBy('release_time', 'asc').skip(amount).limit(this.pageSize)
+      db.collection('goods').where({
+        type: this.type
+      }).orderBy('release_time', 'asc').skip(amount).limit(this.pageSize)
         .get()
         .then(res => {
-          console.log('res: ', res)
+          console.log('goodsget: ', res)
           if (res.data.length > 0) {
             for (let i = 0; i < res.data.length; i++) {
               this.goodsLists.push({
-                'img': res.data[i]['fileID'],
+                'id': res.data[i]['_id'],
+                'img': res.data[i]['headimg'],
                 'price': res.data[i]['price'],
-                'detail': res.data[i]['detail']
+                'detail': res.data[i]['detail'],
+                'favorite': res.data[i]['favorite']
               })
             }
             this.amount += res.data.length
@@ -74,6 +88,11 @@ export default {
         .catch(err => {
           console.error(err)
         })
+    },
+    handle () {
+      // console.log(e)
+      // console.log('set! ', 'a0ffb1cb-bb56-472d-b97d-6c4b39ddd1cd')
+      store.commit('setCurGoodId', '2e48e918-3c64-438d-a644-f0f894916912')
     }
   }
 }
