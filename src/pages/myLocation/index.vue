@@ -54,7 +54,7 @@ export default {
       console.log('id:', addrId)
       // const searchValue = e
       const url = `/pages/editlocation/main?addrId=${addrId}`
-      mpvue.redirectTo({
+      mpvue.navigateTo({
         url
       })
     },
@@ -123,6 +123,7 @@ export default {
 .log-item {
   margin: 10rpx;
 }
+
 .foot-button {
   float:right;
   margin-top:10px;
@@ -134,5 +135,9 @@ export default {
   margin-left: 15px;
   padding-bottom:10px; 
   padding-top:10px;
+}
+
+#createloc {
+  margin: 10px;
 }
 </style>

@@ -74,13 +74,15 @@ export default {
       fail: '操作失败'
     }
   },
-  onLoad () {
-    // if (opp.addrId) {
-    //   this.addrId = opp.addrId
-    //   this.getLocationInfo(opp.addrId)
-    // }
-    this.addrId = 'b77505b4-72f4-477f-8d41-8480a2ac9fb8'
-    this.getLocationInfo(this.addrId)
+  onLoad (opp) {
+    if (opp.addrId !== undefined) {
+      console.log('opp:', opp.addrId)
+      console.log('opp a:', opp.addrId !== undefined)
+      this.addrId = opp.addrId
+      this.getLocationInfo(opp.addrId)
+    }
+    // this.addrId = 'b77505b4-72f4-477f-8d41-8480a2ac9fb8'
+    // this.getLocationInfo(this.addrId)
   },
   onUnload () {
     this.clearCache()
@@ -107,8 +109,8 @@ export default {
         Toast.success({
           message: this.success,
           duration: 1000})
-        const url = `/pages/user/main`
-        mpvue.redirectTo({
+        const url = `/pages/myLocation/main`
+        mpvue.navigateTo({
           url
         })
       }).catch(err => {
@@ -135,8 +137,8 @@ export default {
         Toast.success({
           message: this.success,
           duration: 1000})
-        const url = `/pages/user/main`
-        mpvue.redirectTo({
+        const url = `/pages/myLocation/main`
+        mpvue.navigateTo({
           url
         })
       }).catch(err => {
