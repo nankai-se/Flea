@@ -4,7 +4,8 @@
     "pages/logs/main",
     "pages/counter/main",
     "pages/searchresult/main",
-    "pages/list/main"
+    "pages/list/main",
+    "pages/editAddress/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
