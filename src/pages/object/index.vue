@@ -1,11 +1,12 @@
 <template>
   <div>
+    <van-toast id="van-toast" />
     <div>
       <div class="tabs">
         <van-tabs :active="active" @change="onChange">
           <van-tab title="全部">
-            <div class="noGoods-panel" v-if="!hasAllGoods" v-text="noGoods"></div>
-            <div v-if="hasAllGoods">
+            <div class="noGoods-panel" v-if="!hasGoods" v-text="noGoods"></div>
+            <div v-if="hasGoods">
             <view v-for="item in goodsList" :key="item">
               <view>
                 <van-card
@@ -17,21 +18,21 @@
                     :tag="item.tag"
                   >
                     <view slot="footer" >
-                      <van-button size="mini" round="true">编辑</van-button>
-                      <van-button size="mini" round="true">下架</van-button>
+                      <van-button size="mini" round="true" @click="editGoods(item.goods_id)">编辑</van-button>
+                      <van-button size="mini" round="true" @click="removeGoods(item.goods_id)">下架</van-button>
                     </view>
                 </van-card>
               </view>
             </view>
             </div>
-          <div class="noMoreGoods-panel" v-if="allIsNoMore" v-text="noMoreGoods"></div> 
+          <div class="noMoreGoods-panel" v-if="isNoMore" v-text="noMoreGoods"></div> 
           </van-tab>
 
 
           <van-tab title="待售">
-            <div class="noGoods-panel" v-if="!hasUnsellGoods" v-text="noGoods"></div>
-            <div v-if="hasUnsellGoods">
-            <view v-for="item in unSellList" :key="item">
+            <div class="noGoods-panel" v-if="!hasGoods" v-text="noGoods"></div>
+            <div v-if="hasGoods">
+            <view v-for="item in goodsList" :key="item">
               <view>
                 <van-card
                     :num="item.num"
@@ -42,21 +43,21 @@
                     :tag="item.tag"
                   >
                     <view slot="footer" >
-                      <van-button size="mini" round="true">编辑</van-button>
-                      <van-button size="mini" round="true">下架</van-button>
+                      <van-button size="mini" round="true" @click="editGoods(item.goods_id)">编辑</van-button>
+                      <van-button size="mini" round="true" @click="removeGoods(item.goods_id)">下架</van-button>
                     </view>
                 </van-card>
               </view>
             </view>
             </div>
-          <div class="noMoreGoods-panel" v-if="unSellIsNomore" v-text="noMoreGoods"></div> 
+          <div class="noMoreGoods-panel" v-if="isNoMore" v-text="noMoreGoods"></div> 
           </van-tab>
 
 
           <van-tab title="我卖出的">
-            <div class="noGoods-panel" v-if="!hasSoldGoods" v-text="noGoods"></div>
-            <div v-if="hasSoldGoods">
-            <view v-for="item in soldList" :key="item">
+            <div class="noGoods-panel" v-if="!hasGoods" v-text="noGoods"></div>
+            <div v-if="hasGoods">
+            <view v-for="item in goodsList" :key="item">
               <view>
                 <van-card
                     :num="item.num"
@@ -74,14 +75,14 @@
               </view>
             </view>
             </div>
-          <div class="noMoreGoods-panel" v-if="soldIsNomore" v-text="noMoreGoods"></div> 
+          <div class="noMoreGoods-panel" v-if="isNoMore" v-text="noMoreGoods"></div> 
           </van-tab>
 
           
           <van-tab title="下架商品">
-            <div class="noGoods-panel" v-if="!hasRemovedGoods" v-text="noGoods"></div>
-            <div v-if="hasRemovedGoods">
-              <view v-for="item in removedList" :key="item">
+            <div class="noGoods-panel" v-if="!hasGoods" v-text="noGoods"></div>
+            <div v-if="hasGoods">
+              <view v-for="item in goodsList" :key="item">
                 <view>
                   <van-card
                       :num="item.num"
@@ -92,14 +93,14 @@
                       :tag="item.tag"
                     >
                       <view slot="footer" >
-                        <van-button size="mini" round="true">编辑</van-button>
+                        <van-button size="mini" round="true" @click="editGoods(item.goods_id)">编辑</van-button>
                         <van-button size="mini" round="true" disabled="true">下架</van-button>
                       </view>
                   </van-card>
                 </view>
               </view>
             </div>
-          <div class="noMoreGoods-panel" v-if="removedIsNoMore" v-text="noMoreGoods"></div> 
+          <div class="noMoreGoods-panel" v-if="isNoMore" v-text="noMoreGoods"></div> 
           </van-tab>
           </van-tabs>
       </div>
@@ -108,7 +109,7 @@
 </template>
 
 <script>
-
+import Toast from '../../../static/vant/toast/toast'
 export default {
   components: {
 
@@ -116,79 +117,23 @@ export default {
 
   data () {
     return {
-      goodList: [
-        {
-          tag: '已下架',
-          num: 100,
-          price: 2.00,
-          desc: '描述信息',
-          title: '商品标题',
-          thumb: 'cloud://idwc.6964-idwc/static/images/user.png'
-        },
-        {
-          tag: '待售',
-          num: 5,
-          price: 100.00,
-          desc: '代码托管网站',
-          title: 'github',
-          thumb: 'cloud://idwc.6964-idwc/static/images/user.png'
-        },
-        {
-          tag: '已卖出',
-          num: 5,
-          price: 100.00,
-          desc: '代码托管网站',
-          title: 'github',
-          thumb: 'cloud://idwc.6964-idwc/static/images/user.png'
-        }
-      ],
       goodsList: [
 
       ],
-      unSellList: [
-
-      ],
-      removedList: [
-
-      ],
-      soldList: [
-
-      ],
-      allAmount: 0,
-      unSellAmount: 0,
-      soldAmount: 0,
-      removedAmount: 0,
-      pageSize: 5,
-      hasAllGoods: false,
-      hasUnsellGoods: false,
-      hasSoldGoods: false,
-      hasRemovedGoods: false,
-      allIsNoMore: false,
-      unSellIsNomore: false,
-      soldIsNomore: false,
-      removedIsNoMore: false,
+      hasGoods: false,
+      isNoMore: false,
+      amount: 0,
       owner_id: '1',
       active: 0,
+      pageSize: 10,
       noGoods: '暂时没有商品，过会再来吧~',
-      noMoreGoods: '没有更多商品啦~'
+      noMoreGoods: '没有更多商品啦~',
+      success: '操作成功',
+      fail: '操作失败',
+      openid: 'of4Oa5Z5Rs-LOgvzd_p9HwuW2rLk'
     }
   },
   computed: {
-    goodsStatusUnsell: function () {
-      return this.goodList.filter(function (item) {
-        return item.tag === '待售'
-      })
-    },
-    goodsStatusRemoved: function () {
-      return this.goodList.filter(function (item) {
-        return item.tag === '已下架'
-      })
-    },
-    goodsStatusSold: function () {
-      return this.goodList.filter(function (item) {
-        return item.tag === '已卖出'
-      })
-    }
   },
   created () {
 
@@ -199,35 +144,31 @@ export default {
         this.getMyGoods()
         break
       case 1:
-        this.getMyUnsellGoods()
+        this.getGoods('待售')
         break
       case 2:
-        this.getMySoldGoods()
+        this.getGoods('已卖出')
         break
       case 3:
-        this.getMyRemovedGoods()
+        this.getGoods('下架')
         break
     }
   },
   onLoad (options) {
-    console.log('entry into onLoad')
     this.active = options.active
     let temp = this.active
-    console.log('active: ', this.active)
     switch (parseInt(temp)) {
       case 0:
-        console.log('entry into switch')
         this.getMyGoods()
-        console.log('我的商品', this.goodsList)
         break
       case 1:
-        this.getMyUnsellGoods()
+        this.getGoods('待售')
         break
       case 2:
-        this.getMySoldGoods()
+        this.getGoods('已卖出')
         break
       case 3:
-        this.getMyRemovedGoods()
+        this.getGoods('下架')
         break
     }
   },
@@ -241,21 +182,9 @@ export default {
      */
     clearCache () {
       this.goodsList = []
-      this.unSellList = []
-      this.soldList = []
-      this.removedList = []
-      this.allAmount = 0
-      this.unSellAmount = 0
-      this.soldAmount = 0
-      this.removedAmount = 0
-      this.hasAllGoods = false
-      this.hasUnsellGoods = false
-      this.hasSoldGoods = false
-      this.hasRemovedGoods = false
-      this.allIsNoMore = false
-      this.unSellIsNomore = false
-      this.soldIsNomore = false
-      this.removedIsNoMore = false
+      this.amount = 0
+      this.hasGoods = false
+      this.isNoMore = false
     },
     /**
      * @function
@@ -264,21 +193,20 @@ export default {
      * 不同的tab使用filter从orderlist中选取
      */
     onChange (event) {
-      console.log('event: ', event)
       let index = event.target.index
-      console.log('type: ', typeof index)
+      this.clearCache()
       switch (parseInt(index)) {
         case 0:
           this.getMyGoods()
           break
         case 1:
-          this.getMyUnsellGoods()
+          this.getGoods('待售')
           break
         case 2:
-          this.getMySoldGoods()
+          this.getGoods('已卖出')
           break
         case 3:
-          this.getMyRemovedGoods()
+          this.getGoods('下架')
           break
       }
     },
@@ -288,16 +216,15 @@ export default {
      * 获取我的所有类型商品的列表
      */
     getMyGoods () {
-      console.log('what happen')
       const db = wx.cloud.database()
       db.collection('goods').where({
         owner_id: this.owner_id
-      }).skip(this.allAmount)
+      }).skip(this.amount)
         .limit(this.pageSize)
         .get()
         .then(
           res => {
-            console.log('res: ', res)
+            console.log('all goods res', res)
             if (res.data.length > 0) {
               for (let i = 0; i < res.data.length; i++) {
                 this.goodsList.push(
@@ -306,16 +233,16 @@ export default {
                     'price': res.data[i]['price'],
                     'title': res.data[i]['type'],
                     'desc': res.data[i]['detail'],
-                    'thumb': res.data[i]['imgs'][0],
+                    'thumb': res.data[i]['headimg'],
                     'goods_id': res.data[i]['_id']
                   }
                 )
               }
-              this.allAmount += res.data.length
+              this.amount += res.data.length
             } else {
-              this.allIsNoMore = true
+              this.isNoMore = true
             }
-            this.hasAllGoods = this.allAmount > 0
+            this.hasGoods = this.amount > 0
           }
         ).catch(err => {
           console.error(err)
@@ -323,111 +250,65 @@ export default {
     },
     /**
      * @function
-     * 获取待售的商品列表
+     * 获取其他类型的商品列表
      */
-    getMyUnsellGoods () {
+    getGoods (type) {
       const db = wx.cloud.database()
       db.collection('goods').where({
         owner_id: this.owner_id,
-        state: '待售'
-      }).skip(this.unSellAmount)
+        state: type
+      }).skip(this.amount)
         .limit(this.pageSize)
         .get()
         .then(
           res => {
-            console.log('res: ', res)
             if (res.data.length > 0) {
               for (let i = 0; i < res.data.length; i++) {
-                this.unSellList.push(
+                this.goodsList.push(
                   {
                     'tag': res.data[i]['state'],
                     'price': res.data[i]['price'],
                     'title': res.data[i]['type'],
                     'desc': res.data[i]['detail'],
-                    'thumb': res.data[i]['imgs'][0],
+                    'thumb': res.data[i]['headimg'],
                     'goods_id': res.data[i]['_id']
                   }
                 )
               }
-              this.unSellAmount += res.data.length
+              this.amount += res.data.length
             } else {
-              this.unSellIsNoMore = true
+              this.isNoMore = true
             }
-            this.hasUnsellGoods = this.unSellAmount > 0
+            this.hasGoods = this.amount > 0
           }
         )
     },
-    /**
-     * @function
-     * 获取已经卖出的商品列表
-     */
-    getMySoldGoods () {
-      const db = wx.cloud.database()
-      db.collection('goods').where({
-        owner_id: this.owner_id,
-        state: '已卖出'
-      }).skip(this.soldAmount)
-        .limit(this.pageSize)
-        .get()
-        .then(
-          res => {
-            console.log('res: ', res)
-            if (res.data.length > 0) {
-              for (let i = 0; i < res.data.length; i++) {
-                this.soldList.push(
-                  {
-                    'tag': res.data[i]['state'],
-                    'price': res.data[i]['price'],
-                    'title': res.data[i]['type'],
-                    'desc': res.data[i]['detail'],
-                    'thumb': res.data[i]['imgs'][0],
-                    'goods_id': res.data[i]['_id']
-                  }
-                )
-              }
-              this.soldAmount += res.data.length
-            } else {
-              this.soldIsNoMore = true
-            }
-            this.hasSoldGoods = this.soldAmount > 0
-          }
-        )
+    editGoods (goodsId) {
+
     },
-    /**
-     * @function
-     * 获取下架的商品列表
-     */
-    getMyRemovedGoods () {
+    removeGoods (goodsId) {
       const db = wx.cloud.database()
-      db.collection('goods').where({
-        owner_id: this.owner_id,
-        state: '下架'
-      }).skip(this.removedAmount)
-        .limit(this.pageSize)
-        .get()
-        .then(
-          res => {
-            console.log('res: ', res)
-            if (res.data.length > 0) {
-              for (let i = 0; i < res.data.length; i++) {
-                this.removedList.push(
-                  {
-                    'tag': res.data[i]['state'],
-                    'price': res.data[i]['price'],
-                    'title': res.data[i]['type'],
-                    'desc': res.data[i]['detail'],
-                    'thumb': res.data[i]['imgs'][0],
-                    'goods_id': res.data[i]['_id']
-                  }
-                )
-              }
-              this.removedAmount += res.data.length
-            } else {
-              this.removedIsNoMore = true
-            }
-            this.hasRemovedGoods = this.removedAmount > 0
+      console.log('goodsId', goodsId)
+      db.collection('goods')
+        .doc(goodsId)
+        .update({
+          data: {
+            state: '下架'
           }
-        )
+        })
+        .then(res => {
+          console.log(res)
+          Toast.success({
+            message: this.success,
+            duration: 1000})
+        })
+        .catch(err => {
+          console.log('then err', err)
+          Toast.fail({
+            message: this.fail,
+            duration: 1000
+          })
+        })
     }
   }
 }

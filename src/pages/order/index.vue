@@ -130,64 +130,6 @@ export default {
       noMoreOrders: '没有更多订单啦~',
       active: 0,
       pageSize: 10,
-      ordersList: [
-        {
-          panel: {
-            title: '南开学子',
-            desc: '专业卖二手',
-            status: '已完成'
-          },
-          card: {
-            num: 100,
-            price: 2.00,
-            desc: '换新手机，淘汰旧手机了，这个手机屏幕正常，功能正常，可玩游戏，用了大概1年，就便宜处理了吧',
-            title: '手机',
-            thumb: 'cloud://idwc.6964-idwc/static/images/user.png'
-          }
-        },
-        {
-          panel: {
-            title: '南开学子',
-            desc: '专业卖二手',
-            status: '待发货'
-          },
-          card: {
-            num: 100,
-            price: 2.00,
-            desc: '换新手机，淘汰旧手机了，这个手机屏幕正常，功能正常，可玩游戏，用了大概1年，就便宜处理了吧',
-            title: '手机',
-            thumb: 'cloud://idwc.6964-idwc/static/images/user.png'
-          }
-        },
-        {
-          panel: {
-            title: '南开学子',
-            desc: '专业卖二手',
-            status: '待收货'
-          },
-          card: {
-            num: 100,
-            price: 2.00,
-            desc: '换新手机，淘汰旧手机了，这个手机屏幕正常，功能正常，可玩游戏，用了大概1年，就便宜处理了吧',
-            title: '手机',
-            thumb: 'cloud://idwc.6964-idwc/static/images/user.png'
-          }
-        },
-        {
-          panel: {
-            title: '卖家名称',
-            desc: '描述信息',
-            status: '待付款'
-          },
-          card: {
-            num: 100,
-            price: 2.00,
-            desc: '描述信息',
-            title: '商品标题',
-            thumb: 'cloud://idwc.6964-idwc/static/images/user.png'
-          }
-        }
-      ],
       orderList: [
 
       ],
@@ -197,26 +139,26 @@ export default {
     }
   },
   computed: {
-    orderStatusFinish: function () {
-      return this.ordersList.filter(function (item) {
-        return item.panel.status === '已完成'
-      })
-    },
-    orderStatusUnpaid: function () {
-      return this.ordersList.filter(function (item) {
-        return item.panel.status === '待付款'
-      })
-    },
-    orderStatusUndelivery: function () {
-      return this.ordersList.filter(function (item) {
-        return item.panel.status === '待发货'
-      })
-    },
-    orderStatusUnreceived: function () {
-      return this.ordersList.filter(function (item) {
-        return item.panel.status === '待收货'
-      })
-    }
+    // orderStatusFinish: function () {
+    //   return this.ordersList.filter(function (item) {
+    //     return item.panel.status === '已完成'
+    //   })
+    // },
+    // orderStatusUnpaid: function () {
+    //   return this.ordersList.filter(function (item) {
+    //     return item.panel.status === '待付款'
+    //   })
+    // },
+    // orderStatusUndelivery: function () {
+    //   return this.ordersList.filter(function (item) {
+    //     return item.panel.status === '待发货'
+    //   })
+    // },
+    // orderStatusUnreceived: function () {
+    //   return this.ordersList.filter(function (item) {
+    //     return item.panel.status === '待收货'
+    //   })
+    // }
   },
   created () {
 
@@ -347,7 +289,7 @@ export default {
               'card': {
                 'desc': res.data[0]['detail'],
                 'title': res.data[0]['type'],
-                'thumb': res.data[0]['imgs'][0],
+                'thumb': res.data[0]['headimg'],
                 'price': res.data[0]['price'],
                 'num': 1
               },
