@@ -62,13 +62,13 @@
     </div>
     <div class="bottom-popup">
       <van-cell title="我的地址" is-link url="../myLocation/main" link-type="navigateTo"/>
-      <van-cell title="隐私政策" is-link url="../myLocation/main" link-type="navigateTo"/>
+      <!-- <van-cell title="隐私政策" is-link url="../myLocation/main" link-type="navigateTo"/>
       <van-cell title="用户协议" is-link url="../myLocation/main" link-type="navigateTo"/>
-      <van-cell title="帮助中心" is-link url="../myLocation/main" link-type="navigateTo"/>
+      <van-cell title="帮助中心" is-link url="../myLocation/main" link-type="navigateTo"/> -->
     </div>
-    <div class="setting">
+    <!-- <div class="setting">
       <van-cell title="设置" is-link url="../myLocation/main" link-type="navigateTo"/>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -130,15 +130,6 @@ export default {
   background-color: rgb(247, 247, 247);
   z-index:-1;
 }
-.log-list {
-  display: flex;
-  flex-direction: column;
-  padding: 40rpx;
-}
-
-.log-item {
-  margin: 10rpx;
-}
 
 .unpaid {
   width:60px;
@@ -148,6 +139,7 @@ export default {
 .user_info {
   display: flex;
   height: 120px;
+  width: 100%;
   background-color: rgb(109, 255, 89);
   z-index: 0;
 }
@@ -238,6 +230,7 @@ export default {
 }
 .setting {
   margin-top: 20px;
+  width: 100%;
 }
 #credit {
   font-size:30px;
