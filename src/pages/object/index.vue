@@ -284,7 +284,9 @@ export default {
         )
     },
     editGoods (goodsId) {
-
+      wx.navigateTo({
+        url: '../object/main?goodsId=' + goodsId
+      })
     },
     removeGoods (goodsId) {
       const db = wx.cloud.database()
