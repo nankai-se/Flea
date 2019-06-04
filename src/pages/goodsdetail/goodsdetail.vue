@@ -13,7 +13,7 @@
             <table>
               <tr>
                 <td><span class="username" v-text="ownerName"></span></td>
-                <td><span class="location">八里台</span></td>
+                <td><span class="location" v-text="location"></span></td>
               </tr>
             </table>
           </van-col>
@@ -37,12 +37,12 @@
           </swiper>
         </view>
         <div class="split-line"></div>
-        <span class="location">3人收藏</span>
+        <span class="location" v-text="favorite">人收藏</span>
       </div>
     </div>
     <div class="outer-split-line"></div>
     
-    <div class="comment-box" @click="handle">
+    <!-- <div class="comment-box" @click="handle">
       <div class="outer-split-line"></div>
       <span class="comment">留言</span>
       <div class="outer-split-line"></div>
@@ -61,7 +61,8 @@
         </div>
       </div>
       <div class="outer-split-line"></div>
-    </div>
+    </div> -->
+
     <div class="goodsAction">
       <van-goods-action>
         <van-goods-action-icon
@@ -89,20 +90,16 @@
 </template>
 
 <script>
-import itemdetail from '../../components/itemdetail.vue'
 import store from '../index/store'
 
 export default {
   name: 'goodsdetail',
-  components: {
-    itemdetail
-  },
   data () {
     return {
       ownerName: 'null',
       portrait: '',
       goodId: '',
-      hasTag: false,
+      hasTag: true,
       detail: '暂无商品信息哦~',
       imgs: [],
       price: 0,
@@ -110,25 +107,33 @@ export default {
       myComment: '',
       keyboard: false,
       star: 'star-o',
-      isStar: false
+      isStar: false,
+      location: '',
+      favorite: 0
     }
   },
   onLoad: function (options) {
     console.log(options.goodId)
-    this.goodId = '0d3b0eeb-0750-4f6f-904f-3f023c91c26a'
+    this.goodId = options.goodId
     wx.cloud.init({
       env: 'idwc',
       traceUser: true
     })
-    let goodId = '0d3b0eeb-0750-4f6f-904f-3f023c91c26a'
-    this.getGood(goodId)
-    this.getComment(goodId)
+    // let goodId = '0d3b0eeb-0750-4f6f-904f-3f023c91c26a'
+    this.getGood(this.goodId)
+    this.getComment(this.goodId)
     this.getStar()
   },
   mounted () {
-    console.log('detail page mounted!')
+  },
+  onUnload () {
+    this.clearCache()
   },
   methods: {
+    clearCahe () {
+      this.imgs = []
+      this.commentList = []
+    },
     changeComment (value) {
       console.log(value)
     },
@@ -172,11 +177,12 @@ export default {
         _id: goodId
       }).get()
         .then(res => {
-          // console.log('good: ', res)
+          // console.log('gooddetail: ', res)
           if (res.data.length > 0) {
             this.price = res.data[0]['price']
             this.detail = res.data[0]['detail']
-            this.imgs.push(res.data[0]['fileID'])
+            this.favorite = res.data[0]['favorite']
+            this.imgs.push(res.data[0]['imgs'])
             let id = res.data[0]['owner_id']
             db.collection('user').where({
               _id: id
@@ -185,6 +191,7 @@ export default {
                 if (resU.data.length > 0) {
                   this.ownerName = resU.data[0]['nickName']
                   this.portrait = resU.data[0]['portrait']
+                  this.location = resU.data[0]['location']
                 }
               })
               .catch(err => {
@@ -206,7 +213,6 @@ export default {
           if (res.data.length > 0) {
             let goodsId = res.data[0]['goods_id']
             let index = goodsId.indexOf(this.goodId)
-            console.log('get index: ', index)
             if (index === -1) {
               this.isStar = false
               this.star = 'star-o'

@@ -1,9 +1,9 @@
 <template>
-  <div @click="handle">
+  <div>
     <div class="search">
       <search></search>
     </div>
-    <div class="itempanel">
+    <div class="itempanel" @click="handle">
       <itempanel></itempanel>
     </div>
   </div>
@@ -12,6 +12,7 @@
 <script>
 import itempanel from '../../components/itempanel.vue'
 import search from '../../components/search.vue'
+import store from '../index/store'
 
 export default {
   name: 'goodslist',
@@ -25,20 +26,8 @@ export default {
   },
   methods: {
     handle () {
-      console.log('ddd')
-      // wx.getUserInfo({
-      //   success: function (res) {
-      //     var userInfo = res.userInfo // 用户基本信息
-      //     // var nickName = userInfo.nickName // 用户名
-      //     // var avatarUrl = userInfo.avatarUrl // 头像链接
-      //     // var gender = userInfo.gender // 性别 0：未知、1：男、2：女
-      //     // var province = userInfo.province // 所在省
-      //     // var city = userInfo.city // 所在市
-      //     // var country = userInfo.country // 所在国家
-      //     console.log(userInfo)
-      //   }
-      // })
-      const url = `/pages/goodsdetail/main?goodsId=10`
+      const url = `/pages/goodsdetail/main?goodId=` + store.state.curGoodId
+      console.log(url)
       mpvue.navigateTo({
         url
       })

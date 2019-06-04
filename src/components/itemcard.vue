@@ -6,20 +6,62 @@
     <div class="item-tag">
       <span class="detail" v-text="detail"></span>
       <span class="price-tag">￥</span><span class="price" v-text="price"></span>
-      <span class="favorite">156人收藏</span>
+      <span class="favorite" v-text="favorite">人收藏</span>
       <div class="split-line"></div>
-      <span class="username">username</span>
-      <span class="location">八里台</span>
+      <span class="username" v-text="ownerName"></span>
+      <span class="location" v-text="location"></span>
     </div>
   </div>
 </template>
 
 <script>
+// import store from '../pages/index/store'
+
 export default {
   props: {
+    id: String,
     img: String,
     price: Number,
-    detail: String
+    detail: String,
+    favorite: Number
+  },
+  data () {
+    return {
+      ownerName: '',
+      location: ''
+    }
+  },
+  mounted () {
+    wx.cloud.init({
+      env: 'idwc',
+      traceUser: true
+    })
+    const db = wx.cloud.database()
+    db.collection('goods').where({
+      _id: this.id
+    }).get()
+      .then(res => {
+        if (res.data.length > 0) {
+          let id = res.data[0]['owner_id']
+          db.collection('user').where({
+            _id: id
+          }).get()
+            .then(resU => {
+              if (resU.data.length > 0) {
+                this.ownerName = resU.data[0]['nickName']
+                this.location = resU.data[0]['location']
+              }
+            })
+            .catch(err => {
+              console.error(err)
+            })
+        }
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  },
+  method: {
   }
 }
 </script>
