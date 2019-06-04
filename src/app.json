@@ -9,7 +9,8 @@
     "pages/order/main",
     "pages/object/main",
     "pages/list/main",
-    "pages/goodslist/main"
+    "pages/goodslist/main",
+    "pages/orderDetail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
