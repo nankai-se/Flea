@@ -4,13 +4,18 @@
     "pages/logs/main",
     "pages/counter/main",
     "pages/searchresult/main",
-    "pages/list/main",
-    "pages/editAddress/main"
+    "pages/myLocation/main",
+    "pages/user/main",
+    "pages/order/main",
+    "pages/object/main",
+    "pages/favoriteslist/main",
+    "pages/goodslist/main",
+    "pages/editlocation/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "南开FLEA",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -36,12 +41,12 @@
       "selectedIconPath": "static/tabs/add.png"
     }, {
       "text": "消息",
-      "pagePath": "pages/list/main",
+      "pagePath": "pages/editlocation/main",
       "iconPath": "static/tabs/message.png",
       "selectedIconPath": "static/tabs/message-active.png"
     }, {
       "text": "我的",
-      "pagePath": "pages/logs/main",
+      "pagePath": "pages/user/main",
       "iconPath": "static/tabs/my.png",
       "selectedIconPath": "static/tabs/my-active.png"
     }],
